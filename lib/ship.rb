@@ -22,7 +22,7 @@ class Ship
   end
 
   def ==(other)
-    # responds weird when comparing to nil
+    return false if other.nil?
     @name == other.name &&
       @size == other.size &&
       @hits == other.hits &&
