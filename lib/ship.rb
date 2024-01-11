@@ -1,5 +1,5 @@
 class Ship
-  attr_reader :name, :size
+  attr_reader :name, :size, :hits
   attr_accessor :positions
 
   def initialize(name, size)
@@ -19,6 +19,14 @@ class Ship
 
   def <=>(other)
     name <=> other.name
+  end
+
+  def ==(other)
+    # responds weird when comparing to nil
+    @name == other.name &&
+      @size == other.size &&
+      @hits == other.hits &&
+      @positions == other.positions
   end
 
 end

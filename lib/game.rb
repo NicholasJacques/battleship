@@ -72,10 +72,9 @@ class Game
     puts @ai.board.render(show_ships: false)
     puts "Your Board:"
     puts @user.board.render
-    game_loop
   end
 
-  def game_loop
+  def play_game
     game_over = false
     until game_over do
       user_turn
