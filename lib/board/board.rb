@@ -1,5 +1,5 @@
-require_relative './../cell.rb'
-require_relative './ship_placement_validator.rb'
+require './lib/cell.rb'
+require './lib/ship_placement_strategies/ship_placement_validator.rb'
 
 class Board
   attr_reader :ships, :cells, :grid

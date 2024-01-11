@@ -1,6 +1,6 @@
 require './lib/board/board.rb'
 
-class ShipPlacer
+class RandomShipPlacementStrategy
   def self.place_all(board)
     board.ships.each do |ship|
       place_ship(ship, board)

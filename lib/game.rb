@@ -1,7 +1,10 @@
 require_relative './board/board.rb'
 require_relative './ship.rb'
 require_relative './user.rb'
-require './lib/board/ship_placer.rb'
+require './lib/ship_placement_strategies/random_ship_placement_strategy.rb'
+require './lib/ship_placement_strategies/manual_ship_placement_strategy.rb'
+require './lib/fire_strategies/manual_fire_strategy.rb'
+require './lib/fire_strategies/random_fire_strategy.rb'
 
 class Game
   class << self
@@ -40,7 +43,7 @@ class Game
   def ask_name
     puts "What is your name?"
     name = gets.chomp
-    @user = User.new(name)
+    @user = User.new(name: name, fire_strategy: ManualFireStrategy)
   end
 
   def acknowledge_player
@@ -54,27 +57,17 @@ class Game
     puts "Do you want to use auto-place your ships? [Y] [N]?"
     input = gets.chomp
     if input.upcase == 'Y'
-      ShipPlacer.place_all(@user.board)
+      @user.ship_placement_strategy = RandomShipPlacementStrategy
     else
-      @user.board.ships.each do |ship|
-        ship_placed = false
-        until ship_placed do
-          puts "\nPlace your #{ship.name.capitalize} (length: #{ship.size})"
-          position = gets.chomp
-          begin
-            @user.board.place(position, ship)
-          rescue ShipPlacementError => error
-            puts error.errors
-            puts "Try again"
-            next
-          end
-          ship_placed = true
-        end
-      end
+      @user.ship_placement_strategy = ManualShipPlacementStrategy
     end
-    @ai = User.new
+    @user.place_ships
+
+    @ai = User.new(fire_strategy: RandomFireStrategy)
     @ai.board = Board.new(Game.ships)
-    ShipPlacer.place_all(@ai.board)
+    @ai.ship_placement_strategy = RandomShipPlacementStrategy
+    RandomShipPlacementStrategy.place_all(@ai.board)
+
     puts "Computer's Board:"
     puts @ai.board.render(show_ships: false)
     puts "Your Board:"
@@ -82,31 +75,25 @@ class Game
     game_loop
   end
 
-  def place_ai_ships
-    ShipPlacer.new(ships, @ai_board).place
-  end
-
   def game_loop
     game_over = false
     until game_over do
       user_turn
       computer_turn
+      puts @ai.board.render(show_ships: false)
+      puts @user.board.render
       game_over = is_game_over?
     end
   end
 
   def user_turn
-    puts "Select your target: "
-    position = gets.chomp.upcase
-    @ai.board.fire(position)
-    puts @ai.board.render(show_ships: false)
+    puts "Your turn."
+    @user.take_turn(@ai.board)
   end
 
   def computer_turn
     puts "Computer's turn:"
-    position = @user.board.cells.filter {|k, v| v.hit == false}.keys.sample
-    @user.board.fire(position)
-    puts @user.board.render
+    @ai.take_turn(@user.board)
   end
 
   def is_game_over?
