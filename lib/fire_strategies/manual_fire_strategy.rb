@@ -1,7 +1,11 @@
 class ManualFireStrategy
-  def self.fire_upon(board)
+  def initialize(board)
+    @board = board
+  end
+
+  def fire
     puts "Select your target: "
     position = gets.chomp.upcase
-    board.fire(position)
+    @board.fire(position)
   end
 end

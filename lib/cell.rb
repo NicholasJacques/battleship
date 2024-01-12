@@ -16,6 +16,10 @@ class Cell
     @hit
   end
 
+  def hit_or_miss
+    @hit && @ship ? :hit : :miss
+  end
+
   def render(show_ships: true)
     if @ship && is_hit?
       "\e[9m#{@ship.name[0].upcase}\e[0m" 
@@ -26,5 +30,10 @@ class Cell
     else
       "."
     end
+  end
+
+  def ==(other)
+    return false if other.nil?
+    @position == other.position
   end
 end

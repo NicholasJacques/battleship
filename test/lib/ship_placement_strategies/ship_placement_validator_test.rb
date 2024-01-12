@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require './lib/board/board.rb'
+require './lib/board.rb'
 require './lib/ship_placement_strategies/ship_placement_validator.rb'
 require './lib/ship.rb'
 

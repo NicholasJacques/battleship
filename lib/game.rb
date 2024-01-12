@@ -1,10 +1,11 @@
-require_relative './board/board.rb'
 require_relative './ship.rb'
 require_relative './user.rb'
+require './lib/board.rb'
 require './lib/ship_placement_strategies/random_ship_placement_strategy.rb'
 require './lib/ship_placement_strategies/manual_ship_placement_strategy.rb'
-require './lib/fire_strategies/manual_fire_strategy.rb'
-require './lib/fire_strategies/random_fire_strategy.rb'
+require './lib/fire_strategies/fire_strategy_factory.rb'
+# require './lib/fire_strategies/manual_fire_strategy.rb'
+# require './lib/fire_strategies/random_fire_strategy.rb'
 
 class Game
   class << self
@@ -33,7 +34,9 @@ class Game
     ask_name
     acknowledge_player
     setup_boards
-    play_game
+    winner = play_game
+    puts "#{winner.name} won!"
+
   end
 
   def welcome
@@ -43,7 +46,7 @@ class Game
   def ask_name
     puts "What is your name?"
     name = gets.chomp
-    @user = User.new(name: name, fire_strategy: ManualFireStrategy)
+    @user = User.new(name: name)
   end
 
   def acknowledge_player
@@ -51,7 +54,11 @@ class Game
   end
 
   def setup_boards
-    @user.board = Board.new(Game.ships)
+    user_board = Board.new(Game.ships)
+    ai_board = Board.new(Game.ships)
+
+    @user.fire_strategy = FireStrategyFactory.create(:manual, ai_board)
+    @user.board = user_board
     puts @user.board.render
 
     puts "Do you want to use auto-place your ships? [Y] [N]?"
@@ -63,10 +70,11 @@ class Game
     end
     @user.place_ships
 
-    @ai = User.new(fire_strategy: RandomFireStrategy)
-    @ai.board = Board.new(Game.ships)
+    @ai = User.new
+    @ai.fire_strategy = FireStrategyFactory.create(:random, user_board, user: @ai)
+    @ai.board = ai_board
     @ai.ship_placement_strategy = RandomShipPlacementStrategy
-    RandomShipPlacementStrategy.place_all(@ai.board)
+    @ai.place_ships
 
     puts "Computer's Board:"
     puts @ai.board.render(show_ships: false)
@@ -78,10 +86,11 @@ class Game
     game_over = false
     until game_over do
       user_turn
-      computer_turn
       puts @ai.board.render(show_ships: false)
+      return @user if @ai.lost?
+      computer_turn
       puts @user.board.render
-      game_over = is_game_over?
+      return @ai if @user.lost?
     end
   end
 
@@ -93,9 +102,5 @@ class Game
   def computer_turn
     puts "Computer's turn:"
     @ai.take_turn(@user.board)
-  end
-
-  def is_game_over?
-    @user.lost? || @ai.lost?
   end
 end

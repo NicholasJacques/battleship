@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require './lib/user.rb'
-require './lib/board/board.rb'
+require './lib/board.rb'
 
 describe User do
   describe '#lost?' do

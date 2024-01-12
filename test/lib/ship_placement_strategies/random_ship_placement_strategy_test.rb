@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 
 require './lib/ship_placement_strategies/random_ship_placement_strategy.rb'
-require './lib/board/board.rb'
+require './lib/board.rb'
 require './lib/ship.rb'
 require './lib/game.rb'
 
