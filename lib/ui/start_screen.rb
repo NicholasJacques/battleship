@@ -3,14 +3,13 @@ require './lib/ui/base.rb'
 module UI
   class StartScreen < Base
     def initialize(parent_window)
+      super(parent_window)
       @window = parent_window
     end
 
-    def render
-      @window.clear
+    def set_content
       center_text("Battleship!")
       footer_text("Press any key to continue")
-      @window.refresh
     end
 
     def resize_window_prompt
