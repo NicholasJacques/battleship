@@ -21,7 +21,7 @@ class NewRenderer
     resize_window_guide
     loop do
       input = @window.getch
-      if input != 410
+      if input && input != 410
         break
       end
       sleep(0.1)
@@ -62,7 +62,6 @@ class NewRenderer
     @user_board_window = @window.subwin(10, 19, 0, 0)
     @user_board_window.box("|", "-")
     @user_board_window.refresh
-    sleep(100)
   end
 
   def x_center

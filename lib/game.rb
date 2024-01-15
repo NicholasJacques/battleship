@@ -39,8 +39,8 @@ class Game
     resize_window_prompt
     welcome
     setup_boards
-    winner = play_game
-    puts "#{winner.name} won!"
+    # winner = play_game
+    # puts "#{winner.name} won!"
 
   end
 
