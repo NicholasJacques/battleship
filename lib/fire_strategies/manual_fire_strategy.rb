@@ -4,7 +4,6 @@ class ManualFireStrategy
   end
 
   def fire
-    puts "Select your target: "
     position = gets.chomp.upcase
     @board.fire(position)
   end

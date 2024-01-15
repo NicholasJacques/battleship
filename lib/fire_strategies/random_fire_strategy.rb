@@ -5,6 +5,15 @@ class RandomFireStrategy
   end
 
   def fire
+    position = hunt_ships
+
+    if position.nil?
+      position = @board.cells.filter {|k, v| v.hit == false}.keys.sample
+    end
+    result = @board.fire(position)
+  end
+
+  def hunt_ships
     position = nil
     if @user.fire_history.any?
       @user.fire_history.reverse.each do |fire_result|
@@ -36,10 +45,7 @@ class RandomFireStrategy
         end
       end
     end
-    if position.nil?
-      position = @board.cells.filter {|k, v| v.hit == false}.keys.sample
-    end
-    result = @board.fire(position)
+    return position
   end
 
   def direction_of_ship(ship)

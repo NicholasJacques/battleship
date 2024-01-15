@@ -6,5 +6,6 @@ source "https://rubygems.org"
 
 gem "minitest"
 gem "rake"
+gem 'curses'
 
 gem 'pry-byebug'
