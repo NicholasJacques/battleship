@@ -7,7 +7,7 @@ require './lib/ship_placement_strategies/random_ship_placement_strategy.rb'
 require './lib/ship_placement_strategies/manual_ship_placement_strategy.rb'
 require './lib/fire_strategies/fire_strategy_factory.rb'
 require './lib/render.rb'
-require './lib/ui/new_renderer.rb'
+require './lib/ui/ui.rb'
 require 'curses'
 
 class Game
@@ -23,11 +23,11 @@ class Game
     end
   end
 
+  attr_reader :user, :ai
   def initialize
-    @renderer = Render.new(self)
-    @user = nil
-    @ai = nil
-    @new_renderer = NewRenderer.new
+    @user = User.new
+    @ai = User.new
+    @ui = UI::UI.new(self)
   end
 
   def self.play
@@ -41,32 +41,34 @@ class Game
     setup_boards
     # winner = play_game
     # puts "#{winner.name} won!"
-
   end
 
   def splash_screen
-    @new_renderer.splash_screen
-    @new_renderer.window.getch
+    @ui.splash_screen
+    @ui.window.getch
   end
 
   def resize_window_prompt
-    @new_renderer.resize_window_prompt
+    @ui.resize_window_prompt
   end
 
   def welcome
-    @new_renderer.ask_name
-    name = @new_renderer.window.getstr
-    @user = User.new(name: name)
+    @ui.ask_name
+    name = @ui.window.getstr
+    @user.name = name
+    @ui.hide_cursor
+    @ui.clear_screen
   end
 
   def setup_boards
     user_board = Board.new(Game.ships)
     ai_board = Board.new(Game.ships)
-
     @user.fire_strategy = FireStrategyFactory.create(:manual, ai_board)
     @user.board = user_board
-
-    @new_renderer.display_user_board
+    @ai.board = ai_board
+    @ui.render_game_screen
+    # @ui.display_user_board(@user.board)
+    sleep(100)
   end
 
   # def setup_boards
