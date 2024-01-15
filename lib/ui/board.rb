@@ -22,7 +22,7 @@ module UI
       result.addstr(x_labels)
       y_labels = ('A'..'J').to_a
       y_labels.each_with_index do |label, y|
-        result.setpos(y+1, 0)
+        result.setpos(y+2, 0)
         result.addstr(label)
       end
       result
