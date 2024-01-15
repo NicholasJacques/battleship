@@ -35,9 +35,10 @@ class Game
   end
 
   def play
-    splash_screen
-    resize_window_prompt
-    welcome
+    @ui.start
+
+    # resize_window_prompt
+    # welcome
     setup_boards
     # winner = play_game
     # puts "#{winner.name} won!"
