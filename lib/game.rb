@@ -30,60 +30,19 @@ class Game
     user_board = Board.new(Game.ships)
 
     @user = User.new(
+      name: 'User',
       board: user_board,
       fire_strategy: FireStrategyFactory.create(:manual, ai_board),
     )
     @ai = User.new(
-      board: Board.new(Game.ships),
-      fire_strategy: FireStrategyFactory.create(:random, user_board),
+      board: ai_board,
       ship_placement_strategy: RandomShipPlacementStrategy,
     )
+    @ai.fire_strategy = FireStrategyFactory.create(:random, @user.board, user: @ai)
   end
 
   def self.play
     new.play
-  end
-
-  def setup_boards
-    user_board = Board.new(Game.ships)
-    ai_board = Board.new(Game.ships)
-    @user.fire_strategy = FireStrategyFactory.create(:manual, ai_board)
-    @user.board = user_board
-    @ai.board = ai_board
-    @ui.play_game
-    @current_prompt = "Would you like to place your own ships? (Y/N)"
-    @ui.render
-    manual_ship_placement = @ui.prompt
-
-    if manual_ship_placement == 'Y'
-      @user.ship_placement_strategy = ManualShipPlacementStrategy
-    else
-      @user.ship_placement_strategy = RandomShipPlacementStrategy
-    end
-    @user.place_ships
-    @ui.render
-
-    sleep(100)
-  end
-
-  def play_game
-    game_over = false
-    until game_over do
-      user_turn
-      @renderer.render_boards(@user.board, @ai.board, show_opponent_ships: false)
-      return @user if @ai.lost?
-      computer_turn
-      puts @renderer.render_boards(@user.board, @ai.board, show_opponent_ships: false)
-      return @ai if @user.lost?
-    end
-  end
-
-  def user_turn
-    @user.take_turn(@ai.board)
-  end
-
-  def computer_turn
-    @ai.take_turn(@user.board)
   end
 
   def over?

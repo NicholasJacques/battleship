@@ -13,6 +13,7 @@ module UI
       @window = Curses.init_screen
       Curses.cbreak
       Curses.noecho
+      Curses.start_color
     end
 
     def start_screen

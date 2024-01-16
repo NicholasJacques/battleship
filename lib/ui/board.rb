@@ -18,5 +18,19 @@ module UI
       end
     end
 
+    # def render_cell(cell)
+    #   if cell.ship && cell.is_hit
+    #     'H'
+    #   elsif cell.ship && @show_ships
+    #     'S'
+    #   elsif cell.is_hit
+    #     'X'
+    #   else
+    #     ' '
+        
+
+    #   end
+    # end
+
   end
 end

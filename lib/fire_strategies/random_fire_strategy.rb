@@ -4,7 +4,7 @@ class RandomFireStrategy
     @user = user
   end
 
-  def fire
+  def fire(position=nil)
     position = hunt_ships
 
     if position.nil?

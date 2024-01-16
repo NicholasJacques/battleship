@@ -21,8 +21,11 @@ class Cell
   end
 
   def render(show_ships: true)
-    if @ship && is_hit?
-      "\e[9m#{@ship.name[0].upcase}\e[0m" 
+    if @ship && @ship.sunk?
+      ship.name[0].upcase
+    elsif @ship && is_hit?
+      'H'
+      # "\e[9m#{@ship.name[0].upcase}\e[0m" 
     elsif @ship && show_ships
       ship.name[0].upcase
     elsif is_hit?

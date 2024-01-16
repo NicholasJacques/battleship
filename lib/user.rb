@@ -26,10 +26,6 @@ class User
     @ship_placement_strategy.place_all(@board)
   end
 
-  def take_turn(opponent_board)
-    @fire_history << @fire_strategy.fire
-  end
-
   def fire(position=nil)
     @fire_history << @fire_strategy.fire(position)
   end

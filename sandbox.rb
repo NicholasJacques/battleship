@@ -5,35 +5,30 @@
 # require 'pry-byebug'; binding.pry
 # puts 'exit'
 
+
 require "curses"
+include Curses
 
-Curses.init_screen
-Curses.cbreak
-Curses.noecho
-Curses.stdscr.keypad = true
-at_exit do
-  Curses.close_screen
-end
+begin
+  init_screen
 
-menu = Curses::Menu.new([
-  Curses::Item.new("Apple", ''),
-  Curses::Item.new("Orange", ''),
-  Curses::Item.new("Banana", '')
-])
-menu.post
+  if !Curses.has_colors?
+    addstr "This Terminal does not support colors!"
+  else
+    start_color
 
-while ch = Curses.getch
-  begin
-    case ch
-    when Curses::KEY_UP, ?k
-      menu.up_item
-    when Curses::KEY_DOWN, ?j
-      menu.down_item
-    else
-      break
-    end
-  rescue Curses::RequestDeniedError
+    addstr "This Terminal supports #{colors} colors.\n"
+
+    Curses.colors.times { |i|
+      Curses.init_pair(i, i, 0)
+      attrset(color_pair(i))
+      addstr("#{i.to_s.rjust(3)} ")
+      addstr("\n") if i == 15 || (i > 16 && (i - 15) % 36 == 0)
+    }
   end
-end
 
-menu.unpost
+  getch
+
+ensure
+  close_screen
+end

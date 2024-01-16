@@ -43,7 +43,6 @@ module UI
         @user_board.render
       end
       @game.ai.place_ships
-      @game.ai.fire_strategy = FireStrategyFactory.create(:random, @game.user.board)
       render
     end
 
@@ -51,7 +50,7 @@ module UI
       until @game.over? do
         @console.prompt(
           "Choose A location to fire at:",
-          ->(answer) { @game.user.fire_strategy.fire(answer) }
+          ->(answer) { @game.user.fire(answer) }
         )
         @game.ai.fire
         render
