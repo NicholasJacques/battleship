@@ -26,44 +26,23 @@ class Game
   attr_reader :user, :ai, :current_prompt
 
   def initialize
-    @user = User.new
-    @ai = User.new
-    @ui = UI::UI.new(self)
+    ai_board = Board.new(Game.ships)
+    user_board = Board.new(Game.ships)
+
+    @user = User.new(
+      board: user_board,
+      fire_strategy: FireStrategyFactory.create(:manual, ai_board),
+    )
+    @ai = User.new(
+      board: Board.new(Game.ships),
+      fire_strategy: FireStrategyFactory.create(:random, user_board),
+      ship_placement_strategy: RandomShipPlacementStrategy,
+    )
   end
 
   def self.play
     new.play
   end
-
-  def play
-    user_board = Board.new(Game.ships)
-    ai_board = Board.new(Game.ships)
-    @user.fire_strategy = FireStrategyFactory.create(:manual, ai_board)
-    @user.board = user_board
-    @ai.board = ai_board
-    @ui.start
-    @ui.start
-    @ui.get_placement_strategy
-
-    # setup_boards
-  end
-
-  # def splash_screen
-  #   @ui.splash_screen
-  #   @ui.window.getch
-  # end
-
-  # def resize_window_prompt
-  #   @ui.resize_window_prompt
-  # end
-
-  # def welcome
-  #   @ui.ask_name
-  #   name = @ui.window.getstr
-  #   @user.name = name
-  #   @ui.hide_cursor
-  #   @ui.clear_screen
-  # end
 
   def setup_boards
     user_board = Board.new(Game.ships)
@@ -87,29 +66,6 @@ class Game
     sleep(100)
   end
 
-  # def setup_boards
-  #   user_board = Board.new(Game.ships)
-  #   ai_board = Board.new(Game.ships)
-
-  #   @user.fire_strategy = FireStrategyFactory.create(:manual, ai_board)
-  #   @user.board = user_board
-  #   @renderer.render_splash(footer: "Would you like to place your own ships? (Y/N)")
-  #   input = gets.chomp
-  #   if input.upcase == 'Y'
-  #     @user.ship_placement_strategy = ManualShipPlacementStrategy
-  #   else
-  #     @user.ship_placement_strategy = RandomShipPlacementStrategy
-  #     @user.place_ships
-  #   end
-
-  #   @ai = User.new
-  #   @ai.fire_strategy = FireStrategyFactory.create(:random, user_board, user: @ai)
-  #   @ai.board = ai_board
-  #   @ai.ship_placement_strategy = RandomShipPlacementStrategy
-  #   @ai.place_ships
-  #   @renderer.render_boards(@user.board, @ai.board, show_opponent_ships: false)
-  # end
-
   def play_game
     game_over = false
     until game_over do
@@ -128,5 +84,9 @@ class Game
 
   def computer_turn
     @ai.take_turn(@user.board)
+  end
+
+  def over?
+    @user.lost? || @ai.lost?
   end
 end

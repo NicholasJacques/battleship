@@ -3,11 +3,11 @@ require './lib/ui/board.rb'
 
 module UI
   class BoardContainer < Base
-    def initialize(parent, board_data, row, column, label)
-      super(parent)
+    def initialize(parent, row, column, props={})
+      super(parent, props)
       @window = @parent.window.subwin(12, 22, row, column)
-      @label = "#{label.capitalize}'s Board"
-      @board_content = Board.new(self, board_data)
+      @label = "#{@props[:label].capitalize}'s Board"
+      @board_content = Board.new(self, 2, 2, {board_data: @props[:board_data], show_ships: @props[:show_ships]})
       @child_windows = [@board_content]
     end
   

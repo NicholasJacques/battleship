@@ -2,8 +2,9 @@ module UI
   class Base
   
     attr_accessor :parent, :window
-    def initialize(parent)
+    def initialize(parent, props = {})
       @parent = parent
+      @props = props
       @window = nil
       @child_windows = []
     end
@@ -12,7 +13,6 @@ module UI
       set_content
       @window.refresh
       @child_windows.each(&:render)
-      run
     end
   
     def refresh
@@ -24,6 +24,10 @@ module UI
       nil
     end
 
+    def run
+      nil
+    end
+
     def clear
       @window.clear
     end
@@ -32,7 +36,7 @@ module UI
       @window.close
     end
   
-    def center_x(line, element)
+    def center_x(line, text)
       width = @window.maxx
       x = (width - text.length) / 2
       @window.setpos(line, x)
@@ -71,5 +75,15 @@ module UI
       Curses.curs_set(1)
     end
   
+    def get_user_input_string
+      input = @window.getstr
+      if input == 'quit'
+        Curses.close_screen
+        exit
+      else
+        input
+      end
+    end
+
   end
 end

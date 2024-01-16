@@ -2,34 +2,30 @@ require './lib/ui/ui.rb'
 
 module UI
   class GameConsole < Base
-    def initialize(parent, game)
+    def initialize(parent, row, column, game)
       super(parent)
       @game = game
-      @window = @parent.window.derwin(3, 54, 1, 0)
+      @window = @parent.window.derwin(3, 54, row, column)
       @window.box('|', '-')
     end
 
-    def set_content
-      @window.setpos(1, 3)
-    end
+    # def set_content
+    #   @window.setpos(1, 3)
+    # end
 
-    def prompt
+    def prompt(validate_response)
       show_cursor
+      Curses.echo
       @window.setpos(1, 2)
-      answer = nil
-      until answer
-        answer = @window.getstr
-        if ['Y', 'N'].include?(answer.upcase)
-          answer = answer.upcase
+      loop do
+        answer = get_user_input_string
+        if validate_response.call(answer.upcase)
+          reset_prompt
+          return answer.upcase
         else
-          answer = nil
           reset_prompt
         end
       end
-      @window.clear
-      hide_cursor
-      refresh
-      answer
     end
 
     def reset_prompt

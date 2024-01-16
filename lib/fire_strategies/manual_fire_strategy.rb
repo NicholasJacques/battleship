@@ -3,8 +3,7 @@ class ManualFireStrategy
     @board = board
   end
 
-  def fire
-    position = gets.chomp.upcase
+  def fire(position)
     @board.fire(position)
   end
 end

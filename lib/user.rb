@@ -6,10 +6,10 @@ class User
                 :fire_strategy,
                 :fire_history
 
-  def initialize(name: 'Computer', fire_strategy: nil)
+  def initialize(name: 'Computer', board: nil, fire_strategy: nil, ship_placement_strategy: nil)
     @name = name
-    @board = nil
-    @ship_placement_strategy = nil
+    @board = board
+    @ship_placement_strategy = ship_placement_strategy
     @fire_strategy = fire_strategy
     @fire_history = []
   end
@@ -28,6 +28,10 @@ class User
 
   def take_turn(opponent_board)
     @fire_history << @fire_strategy.fire
+  end
+
+  def fire(position=nil)
+    @fire_history << @fire_strategy.fire(position)
   end
 
 end

@@ -11,4 +11,7 @@ class Runner
   end
 end
 
+at_exit do
+  Curses.close_screen
+end
 Runner.new.run
