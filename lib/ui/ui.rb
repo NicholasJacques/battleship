@@ -25,7 +25,9 @@ module UI
       @current_screen = start_screen
       render
       @window.getch
-      start_screen.resize_window_prompt
+      if !start_screen.correct_dimensions?
+        start_screen.resize_window_prompt
+      end
       @game.user.name = start_screen.ask_name
     end
 
