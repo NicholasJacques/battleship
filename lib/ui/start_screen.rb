@@ -5,6 +5,7 @@ module UI
     def initialize(parent_window)
       super(parent_window)
       @window = parent_window
+      hide_cursor
     end
 
     def set_content

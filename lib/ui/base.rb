@@ -16,7 +16,7 @@ module UI
   
     def refresh
       @window.refresh
-      @child_windows.each(&:refresh)
+      # @child_windows.each(&:refresh)
     end
 
     def set_content

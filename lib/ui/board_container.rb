@@ -3,19 +3,13 @@ require './lib/ui/board.rb'
 
 module UI
   class BoardContainer < Base
-    def initialize(parent_window, board_data, row, column, label)
-      super(parent_window)
-      @window = @parent.subwin(12, 22, row, column)
+    def initialize(parent, board_data, row, column, label)
+      super(parent)
+      @window = @parent.window.subwin(12, 22, row, column)
       @label = "#{label.capitalize}'s Board"
-      @board_content = Board.new(@window, board_data)
+      @board_content = Board.new(self, board_data)
       @child_windows = [@board_content]
     end
-  
-    # def render
-    #   set_content
-    #   @window.refresh
-    #   @child_windows.each(&:render)
-    # end
   
     def set_content
       center_x(0, @label)

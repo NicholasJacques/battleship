@@ -23,11 +23,12 @@ class Game
     end
   end
 
-  attr_reader :user, :ai
+  attr_reader :user, :ai, :current_prompt
   def initialize
     @user = User.new
     @ai = User.new
     @ui = UI::UI.new(self)
+    @current_prompt = nil
   end
 
   def self.play
@@ -36,12 +37,7 @@ class Game
 
   def play
     @ui.start
-
-    # resize_window_prompt
-    # welcome
     setup_boards
-    # winner = play_game
-    # puts "#{winner.name} won!"
   end
 
   def splash_screen
@@ -67,8 +63,19 @@ class Game
     @user.fire_strategy = FireStrategyFactory.create(:manual, ai_board)
     @user.board = user_board
     @ai.board = ai_board
-    @ui.render_game_screen
-    # @ui.display_user_board(@user.board)
+    @ui.play_game
+    @current_prompt = "Would you like to place your own ships? (Y/N)"
+    @ui.render
+    manual_ship_placement = @ui.prompt
+
+    if manual_ship_placement == 'Y'
+      @user.ship_placement_strategy = ManualShipPlacementStrategy
+    else
+      @user.ship_placement_strategy = RandomShipPlacementStrategy
+    end
+    @user.place_ships
+    @ui.render
+
     sleep(100)
   end
 

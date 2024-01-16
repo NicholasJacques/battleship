@@ -3,17 +3,11 @@ require './lib/ui/base.rb'
 module UI
   class Board < Base
 
-    def initialize(parent_window, board_data)
-      super(parent_window)
-      @window = @parent.derwin(10, 19, 2, 2)
+    def initialize(parent, board_data)
+      super(parent)
+      @window = @parent.window.derwin(10, 19, 2, 2)
       @board_data = board_data
     end
-
-    # def render
-    #   set_content
-    #   @window.refresh
-    #   @child_windows.each(&:render)
-    # end
 
     def set_content
       @board_data.grid.each_with_index do |row, y|
@@ -22,5 +16,6 @@ module UI
         @window.addstr(row_string)
       end
     end
+
   end
 end

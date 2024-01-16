@@ -10,7 +10,7 @@ module UI
     def initialize(game)
       @game = game
       @window = Curses.init_screen
-      hide_cursor
+      @current_screen = start_screen
     end
 
     def start_screen
@@ -22,29 +22,26 @@ module UI
     end
 
     def start
-      start_screen.render
+      @current_screen = start_screen
+      render
       @window.getch
       start_screen.resize_window_prompt
       @game.user.name = start_screen.ask_name
     end
 
-    def render_game_screen
+    def play_game
       @window.clear
-      game_screen.render
-    end
-  
-    def clear_screen
-      @window.clear
-      @window.refresh
+      @current_screen = game_screen
+      @current_screen.render
     end
 
-    def hide_cursor
-      Curses.curs_set(0)
+    def render
+      @current_screen.render
     end
 
-    def show_cursor
-      Curses.curs_set(1)
+    def prompt
+      @current_screen.prompt
     end
-    
+
   end
 end
