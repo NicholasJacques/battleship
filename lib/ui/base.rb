@@ -12,6 +12,7 @@ module UI
       set_content
       @window.refresh
       @child_windows.each(&:render)
+      run
     end
   
     def refresh
@@ -22,8 +23,16 @@ module UI
     def set_content
       nil
     end
+
+    def clear
+      @window.clear
+    end
+
+    def close
+      @window.close
+    end
   
-    def center_x(line, text)
+    def center_x(line, element)
       width = @window.maxx
       x = (width - text.length) / 2
       @window.setpos(line, x)

@@ -21,5 +21,9 @@ module UI
       @console.prompt
     end
 
+    def run
+      sleep(100)
+    end
+
   end
 end

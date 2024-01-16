@@ -1,3 +1,14 @@
-require_relative './game'
+require './lib/ui/ui.rb'
 
-Game.play
+
+class Runner
+  def initialize
+    @ui = UI::UI.new
+  end
+
+  def run
+    @ui.start
+  end
+end
+
+Runner.new.run

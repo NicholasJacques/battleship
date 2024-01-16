@@ -9,8 +9,19 @@ module UI
     end
 
     def set_content
-      center_text("Battleship!")
+      center_text("BATTLESHIP")
       footer_text("Press any key to continue")
+    end
+
+    def run
+      @window.getch
+      if !correct_dimensions?
+        resize_window_prompt
+      end
+    end
+
+    def correct_dimensions?
+      @window.maxx == 60 && @window.maxy == 40
     end
 
     def resize_window_prompt
@@ -28,7 +39,7 @@ module UI
     end
 
     def resize_window_guide
-      center_text("Battleship!")
+      center_text("BATTLESHIP")
       [ 
         "Before we begin, please resize your window to 60x40",
         "Current Size: #{@window.maxx}x#{@window.maxy}",
@@ -52,7 +63,7 @@ module UI
     def ask_name
       show_cursor
       @window.clear
-      center_text("Battleship!")
+      center_text("BATTLESHIP")
       footer_text("What is your name? ")
       @window.refresh
       name = @window.getstr

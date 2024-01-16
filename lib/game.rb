@@ -24,11 +24,11 @@ class Game
   end
 
   attr_reader :user, :ai, :current_prompt
+
   def initialize
     @user = User.new
     @ai = User.new
     @ui = UI::UI.new(self)
-    @current_prompt = nil
   end
 
   def self.play
@@ -36,26 +36,34 @@ class Game
   end
 
   def play
+    user_board = Board.new(Game.ships)
+    ai_board = Board.new(Game.ships)
+    @user.fire_strategy = FireStrategyFactory.create(:manual, ai_board)
+    @user.board = user_board
+    @ai.board = ai_board
     @ui.start
-    setup_boards
+    @ui.start
+    @ui.get_placement_strategy
+
+    # setup_boards
   end
 
-  def splash_screen
-    @ui.splash_screen
-    @ui.window.getch
-  end
+  # def splash_screen
+  #   @ui.splash_screen
+  #   @ui.window.getch
+  # end
 
-  def resize_window_prompt
-    @ui.resize_window_prompt
-  end
+  # def resize_window_prompt
+  #   @ui.resize_window_prompt
+  # end
 
-  def welcome
-    @ui.ask_name
-    name = @ui.window.getstr
-    @user.name = name
-    @ui.hide_cursor
-    @ui.clear_screen
-  end
+  # def welcome
+  #   @ui.ask_name
+  #   name = @ui.window.getstr
+  #   @user.name = name
+  #   @ui.hide_cursor
+  #   @ui.clear_screen
+  # end
 
   def setup_boards
     user_board = Board.new(Game.ships)
