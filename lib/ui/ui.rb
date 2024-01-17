@@ -1,44 +1,44 @@
 require 'curses'
 require './lib/game.rb'
-require './lib/ui/game_screen.rb'
-require './lib/ui/menu_screen.rb'
-require './lib/ui/start_screen.rb'
+require './lib/ui/screens/start_screen.rb'
+require './lib/ui/screens/main_menu.rb'
+require './lib/ui/screens/game_screen.rb'
 
 module UI
   class UI
     attr_reader :window
   
     def initialize
-      @game = nil
-      @window = Curses.init_screen
-      Curses.cbreak
-      Curses.noecho
-      Curses.start_color
+      @game = Game.new
+      # @window = Curses.init_screen
+      # Curses.cbreak
+      # Curses.noecho
+      # Curses.start_color
     end
 
     def start_screen
-      @start_screen ||= StartScreen.new(@window)
+      @start_screen ||= StartScreen.new
     end
 
     def game_screen
-      @game_screen ||= GameScreen.new(@window, @game)
+      @game_screen ||= GameScreen.new(@game)
     end
 
     def menu_screen
-      @menu_screen ||= MenuScreen.new(@window)
+      @menu_screen ||= MainMenu.new
     end
 
     def start
       start_screen.render
       start_screen.run
-      @window.clear
+      start_screen.tear_down
       main_menu
     end
 
     def main_menu
       menu_screen.render
       next_action = menu_screen.run
-      @window.clear
+      menu_screen.tear_down
       case next_action
       when 'New Game'
         play_game
@@ -51,7 +51,7 @@ module UI
       @game = Game.new
       game_screen.render
       game_screen.run
-      @window.clear
+      game_screen.tear_down
     end
 
   end

@@ -48,4 +48,8 @@ class Game
   def over?
     @user.lost? || @ai.lost?
   end
+
+  def to_s
+    "Game: #{@user.name}; #{@ai.name}"
+  end
 end

@@ -1,20 +1,25 @@
-require './lib/ui/base.rb'
-require './lib/ui/board_container.rb'
-require './lib/ui/console_container.rb'
+require 'curses'
+require './lib/ui/positionable.rb'
+require './lib/ui/components/board_container.rb'
+require './lib/ui/components/console_container.rb'
 
 module UI
-  class GameScreen < Base
-    def initialize(parent, game)
-      super(parent)
-      @window = parent
+  class GameScreen
+    include Positionable
+
+    def initialize(game)
       @game = game
+      @window = Curses.stdscr
+      @user_board = BoardContainer.new(self, 12, 22, 16, 3, {label: @game.user.name, show_ships: true, board_data: @game.user.board})
+      @ai_board = BoardContainer.new(self, 12, 22, 3, 3, {label: 'Opponent', show_ships: false, board_data: @game.ai.board})
+      @console = ConsoleContainer.new(self, 4, 54, 36, 3, {game: @game})
+      @child_windows = [@user_board, @ai_board, @console]
+      Curses.start_color
     end
 
-    def set_content
-      @user_board = BoardContainer.new(self, 16, 3, {label: @game.user.name, show_ships: true, board_data: @game.user.board})
-      @ai_board = BoardContainer.new(self, 3, 3, {label: 'Opponent', show_ships: false, board_data: @game.ai.board})
-      @console = ConsoleContainer.new(self, 36, 3, @game)
-      @child_windows = [@user_board, @ai_board, @console]
+    def render
+      @child_windows.each(&:render)
+      @window.refresh
     end
 
     def run
@@ -55,6 +60,10 @@ module UI
         @game.ai.fire
         render
       end
+    end
+
+    def to_s
+      "GameScreen"
     end
 
   end

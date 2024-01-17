@@ -1,27 +1,25 @@
-require './lib/ui/base.rb'
-require './lib/ui/game_console.rb'
+require './lib/ui/components/base.rb'
+require './lib/ui/components/console.rb'
 
 module UI
-  class ConsoleContainer < Base
-    def initialize(parent, row, column, game)
-      super(parent)
-      @window = @parent.window.derwin(4, 54, row, column)
-      @game = game
-      @console = GameConsole.new(self, 1, 0, game)
+  class ConsoleContainer < Window
+    def initialize(*args)
+      super(*args)
+      @console = Console.new(self, 3, 54, 1, 0, @props)
       @child_windows = [@console]
     end
 
-    # def set_content
-    #   @window.setpos(0, 1)
-    #   @window.addstr(@game.current_prompt)
-    # end
+    def render
+      @child_windows.each(&:render)
+      @window.refresh
+    end
 
     def prompt(message, validate_response)
       reset_prompt
       @window.setpos(0, 1)
       @window.addstr(message)
       @console.window.setpos(1, 2)
-      refresh
+      render
       return @console.prompt(validate_response)
     end
 
@@ -30,6 +28,10 @@ module UI
       @window.addstr(' ' * (@window.maxx - 1))
       @window.setpos(0, 1)
       @window.refresh
+    end
+
+    def to_s
+      "ConsoleContainer"
     end
   end
 end

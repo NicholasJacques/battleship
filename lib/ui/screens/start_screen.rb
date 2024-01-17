@@ -1,16 +1,21 @@
-require './lib/ui/base.rb'
+require 'curses'
+require './lib/ui/positionable.rb'
 
 module UI
-  class StartScreen < Base
-    def initialize(parent_window)
-      super(parent_window)
-      @window = parent_window
-      hide_cursor
+  class StartScreen
+    include Positionable
+
+    def initialize()
+      @window = Curses.stdscr
+      Curses.cbreak
+      Curses.noecho
+      Curses.curs_set(0)
     end
 
-    def set_content
+    def render
       center_text("BATTLESHIP")
       footer_text("Press any key to continue")
+      @window.refresh
     end
 
     def run
@@ -60,15 +65,9 @@ module UI
       resize_window_guide
     end
 
-    def ask_name
-      show_cursor
-      @window.clear
-      center_text("BATTLESHIP")
-      footer_text("What is your name? ")
-      @window.refresh
-      name = @window.getstr
-      hide_cursor
-      name
+    def tear_down
+      Curses.close_screen
     end
+
   end
 end

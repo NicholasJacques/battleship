@@ -1,16 +1,16 @@
 require 'curses'
-
-require './lib/ui/base.rb'
+require './lib/ui/positionable.rb'
 
 module UI
-  class MenuScreen < Base
-    def initialize(parent_window)
-      super(parent_window)
-      @window = parent_window
-    end
-  
-    def set_content
+  class MainMenu
+    include Positionable
+
+    def initialize
+      @window = Curses.stdscr
       Curses.stdscr.keypad = true
+    end
+
+    def render
       center_text("BATTLESHIP")
       @menu = Curses::Menu.new([
         Curses::Item.new("New Game", ''),
@@ -23,7 +23,7 @@ module UI
       menu_window = @window.derwin(height, width, top, left)
       @menu.set_sub(menu_window)
       @menu.post
-      menu_window.refresh
+      @window.refresh
     end
 
     def run
@@ -40,6 +40,12 @@ module UI
         rescue Curses::RequestDeniedError
         end
       end
+    end
+
+    def tear_down
+      Curses.stdscr.keypad = true
+      @window.clear
+      Curses.close_screen
     end
   end
 end

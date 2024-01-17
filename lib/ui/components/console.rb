@@ -1,20 +1,19 @@
-require './lib/ui/ui.rb'
+require './lib/ui/components/base.rb'
 
 module UI
-  class GameConsole < Base
-    def initialize(parent, row, column, game)
-      super(parent)
-      @game = game
-      @window = @parent.window.derwin(3, 54, row, column)
-      @window.box('|', '-')
+  class Console < Window
+    def initialize(*args)
+      super(*args)
     end
 
-    # def set_content
-    #   @window.setpos(1, 3)
-    # end
+    def render
+      @window.box('|', '-')
+      @window.setpos(1, 2)
+      @window.refresh
+    end
 
     def prompt(validate_response)
-      show_cursor
+      Curses.curs_set(1)
       Curses.echo
       @window.setpos(1, 2)
       loop do
@@ -33,6 +32,16 @@ module UI
       @window.addstr(' ' * (@window.maxx - 2))
       @window.setpos(1, 2)
       @window.refresh
+    end
+
+    def get_user_input_string
+      input = @window.getstr
+      if input == 'quit'
+        Curses.close_screen
+        exit
+      else
+        input
+      end
     end
 
   end
