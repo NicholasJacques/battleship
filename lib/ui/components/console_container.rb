@@ -5,14 +5,14 @@ module UI
   class ConsoleContainer < Window
     def initialize(*args)
       super(*args)
-      @console = Console.new(self, @game, 3, 54, 1, 0, @props)
+      @console = Console.new(self, @game_state, 3, 54, 1, 0, @props)
       @child_windows = [@console]
     end
 
     def render
       reset_prompt
       @window.setpos(0, 1)
-      @window.addstr(@game.get_prompt)
+      @window.addstr(@game_state.get_prompt)
       @console.window.setpos(1, 2)
 
       @child_windows.each(&:render)

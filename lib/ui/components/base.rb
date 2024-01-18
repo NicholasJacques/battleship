@@ -1,8 +1,8 @@
 module UI
   class Base
-    def initialize(parent, game)
+    def initialize(parent, game_state)
       @parent = parent
-      @game = game
+      @game_state = game_state
       @children = []
     end
   end
@@ -10,8 +10,8 @@ module UI
   class Window < Base
     include Positionable
 
-    def initialize(parent, game, height, width, top, left, props={})
-      super(parent, game)
+    def initialize(parent, game_state, height, width, top, left, props={})
+      super(parent, game_state)
       # Curses.close_screen
       # require 'pry'; binding.pry
       @window = @parent.window.derwin(height, width, top, left)

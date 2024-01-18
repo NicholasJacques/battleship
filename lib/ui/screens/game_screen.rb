@@ -8,13 +8,13 @@ module UI
   class GameScreen
     include Positionable
 
-    def initialize(game)
-      @game = game
+    def initialize(game_state)
+      @game_state = game_state
       @window = Curses.stdscr
-      @user_board = BoardContainer.new(self, @game, 12, 22, 16, 3, {label: @game.user.name, show_ships: true, board_data: @game.user.board})
-      @ai_board = BoardContainer.new(self, @game, 12, 22, 3, 3, {label: 'Opponent', show_ships: false, board_data: @game.ai.board})
-      @console = ConsoleContainer.new(self, @game, 4, 54, 36, 3)
-      @messages = Messages.new(self, @game, 24, 30, 4, 30)
+      @user_board = BoardContainer.new(self, @game_state, 12, 22, 16, 3, {label: @game_state.user_name, show_ships: true, board_data: @game_state.user_board})
+      @ai_board = BoardContainer.new(self, @game_state, 12, 22, 3, 3, {label: 'Opponent', show_ships: true, board_data: @game_state.ai_board})
+      @console = ConsoleContainer.new(self, @game_state, 4, 54, 36, 3)
+      @messages = Messages.new(self, @game_state, 24, 30, 4, 30)
       @child_windows = [@user_board, @ai_board, @console, @messages]
       Curses.start_color
     end
@@ -34,7 +34,7 @@ module UI
           Curses.close_screen
           exit
         else
-          @game.process_input(input)
+          @game_state.process_input(input)
         end
       end
     end

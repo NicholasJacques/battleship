@@ -3,13 +3,14 @@ require './lib/game.rb'
 require './lib/ui/screens/start_screen.rb'
 require './lib/ui/screens/main_menu.rb'
 require './lib/ui/screens/game_screen.rb'
+require './lib/game_state_manager.rb'
 
 module UI
   class UI
     attr_reader :window
   
     def initialize
-      @game = Game.new
+      # @game = Game.new
       # @window = Curses.init_screen
       # Curses.cbreak
       # Curses.noecho
@@ -21,7 +22,7 @@ module UI
     end
 
     def game_screen
-      @game_screen ||= GameScreen.new(@game)
+      @game_screen ||= GameScreen.new(@game_state)
     end
 
     def menu_screen
@@ -48,8 +49,7 @@ module UI
     end
 
     def play_game
-      @game = Game.new
-      @game.setup
+      @game_state = GameStateManager.create_game
       game_screen.render
       game_screen.run
       game_screen.tear_down
