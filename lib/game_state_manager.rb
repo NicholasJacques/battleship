@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'curses'
 
 class GameStateManager
   extend Forwardable
@@ -82,9 +83,11 @@ class GameStateManager
       @current_action = :take_turn
     else
       ship = @ships_to_place.first
-      user.ship_placement_strategy.place_ship(ship, user.board, input)
-      @messages << "Placed #{ship.name.capitalize}"
-      @ships_to_place.shift
+      success, messages = ManualShipPlacementStrategy.place_ship(ship, user.board, input)
+      @messages += messages
+      if success
+        @ships_to_place.shift
+      end
       if @ships_to_place.empty?
         @current_action = :take_turn
       end

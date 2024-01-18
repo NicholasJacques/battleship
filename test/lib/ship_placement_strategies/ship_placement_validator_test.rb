@@ -111,3 +111,5 @@ describe ShipPlacementValidator do
     end
   end
 end
+
+# TODO Test A1 B2 B3 B4 B5
