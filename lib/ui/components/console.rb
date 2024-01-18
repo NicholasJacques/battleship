@@ -12,19 +12,13 @@ module UI
       @window.refresh
     end
 
-    def prompt(validate_response)
+    def prompt
       Curses.curs_set(1)
       Curses.echo
       @window.setpos(1, 2)
-      loop do
-        answer = get_user_input_string
-        if validate_response.call(answer.upcase)
-          reset_prompt
-          return answer.upcase
-        else
-          reset_prompt
-        end
-      end
+      answer = get_user_input_string
+      reset_prompt
+      answer
     end
 
     def reset_prompt

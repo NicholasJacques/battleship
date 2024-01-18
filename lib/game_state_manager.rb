@@ -1,11 +1,16 @@
-class GameState
+class GameStateManager
   attr_accessor :prompt, :response_handler, :new_messages
 
   def initialize(game, )
     @game = nil
+    @state = nil
     @prompt = nil
-    @response_handler= nil
-    @new_messages = []
   end
+
+  def create_game
+
+
+  end
+
 
 end

@@ -5,7 +5,7 @@ module UI
   class BoardContainer < Window
     def initialize(*args)
       super(*args)
-      @board_content = Board.new(self, 10, 19, 2, 2, {board_data: @props[:board_data], show_ships: @props[:show_ships]})
+      @board_content = Board.new(self, @game, 10, 19, 2, 2, {board_data: @props[:board_data], show_ships: @props[:show_ships]})
       @child_windows = [@board_content]
     end
 

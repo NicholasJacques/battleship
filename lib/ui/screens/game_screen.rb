@@ -11,57 +11,31 @@ module UI
     def initialize(game)
       @game = game
       @window = Curses.stdscr
-      @user_board = BoardContainer.new(self, 12, 22, 16, 3, {label: @game.user.name, show_ships: true, board_data: @game.user.board})
-      @ai_board = BoardContainer.new(self, 12, 22, 3, 3, {label: 'Opponent', show_ships: false, board_data: @game.ai.board})
-      @console = ConsoleContainer.new(self, 4, 54, 36, 3, {game: @game})
-      @messages = Messages.new(self, 24, 30, 4, 30, {game: @game})
+      @user_board = BoardContainer.new(self, @game, 12, 22, 16, 3, {label: @game.user.name, show_ships: true, board_data: @game.user.board})
+      @ai_board = BoardContainer.new(self, @game, 12, 22, 3, 3, {label: 'Opponent', show_ships: false, board_data: @game.ai.board})
+      @console = ConsoleContainer.new(self, @game, 4, 54, 36, 3)
+      @messages = Messages.new(self, @game, 24, 30, 4, 30)
       @child_windows = [@user_board, @ai_board, @console, @messages]
       Curses.start_color
     end
 
     def render
+      Curses.curs_set(0)
       header_text("BATTLESHIP")
       @child_windows.each(&:render)
       @window.refresh
     end
 
     def run
-      place_ships
-      take_turns
-    end
-
-    def place_ships
-      manual_placement = @console.prompt(
-        "Would you like to place your own ships? (Y/N)",
-        ->(answer) { ['Y', 'N'].include?(answer) }
-      )
-
-      if manual_placement == 'Y'
-        @game.user.ship_placement_strategy = ManualShipPlacementStrategy
-        @game.user.board.ships.each do |ship|
-          @console.prompt(
-            "Place your #{ship.name.capitalize} (length: #{ship.size}):",
-            ->(answer) { @game.user.ship_placement_strategy.place_ship(ship, @game.user.board, answer) }
-          )
-          @user_board.render
-        end
-      else
-        @game.user.ship_placement_strategy = RandomShipPlacementStrategy
-        @game.user.place_ships
-        @user_board.render
-      end
-      @game.ai.place_ships
-      render
-    end
-
-    def take_turns
-      until @game.over? do
-        @console.prompt(
-          "Choose A location to fire at:",
-          ->(answer) { @game.user.fire(answer) }
-        )
-        @game.ai.fire
+      loop do
         render
+        input = @console.prompt
+        if input == 'quit'
+          Curses.close_screen
+          exit
+        else
+          @game.process_input(input)
+        end
       end
     end
 

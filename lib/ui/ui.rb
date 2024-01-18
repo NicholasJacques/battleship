@@ -49,6 +49,7 @@ module UI
 
     def play_game
       @game = Game.new
+      @game.setup
       game_screen.render
       game_screen.run
       game_screen.tear_down
