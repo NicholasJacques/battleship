@@ -15,4 +15,11 @@ module UI
       @props = props
     end
   end
+
+  # class Pad < Base
+  #   def initialize(parent, height, width, props={})
+  #     super(parent)
+  #     @window = Curses::Pad.new(height, width)
+  #   end
+  # end
 end

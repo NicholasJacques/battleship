@@ -16,6 +16,10 @@ module Positionable
     @window.addstr(text)
   end
 
+  def header_text(text)
+    center_x(1, text)
+  end
+
   def footer_text(text)
     height, width = @window.maxy, @window.maxx
     x = (width - text.length) / 2

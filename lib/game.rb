@@ -6,7 +6,6 @@ require './lib/board.rb'
 require './lib/ship_placement_strategies/random_ship_placement_strategy.rb'
 require './lib/ship_placement_strategies/manual_ship_placement_strategy.rb'
 require './lib/fire_strategies/fire_strategy_factory.rb'
-require './lib/render.rb'
 require './lib/ui/ui.rb'
 require 'curses'
 
