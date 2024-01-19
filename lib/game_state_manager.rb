@@ -16,6 +16,8 @@ class GameStateManager
     @current_action = :place_ships_decision
     @ships_to_place = @game.user.board.ships.dup
     @messages = []
+    # @messages = ["Line 1", "Line 2", "Line 3", "Line 4", "Placed carrier", "Placed battleship", "Placed cruiser", "Ship must be placed vertically or horizontal in sequential cells."]
+    # @messages = ["Ship must be placed vertically or horizontal in sequential cells."]
   end
 
   # Accessor methods for game state
