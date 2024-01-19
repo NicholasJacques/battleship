@@ -23,7 +23,9 @@ class User
   # end
 
   def fire(position=nil)
-    @fire_history << @fire_strategy.fire(position)
+    result = @fire_strategy.fire(position)
+    @fire_history << result
+    result
   end
 
 end

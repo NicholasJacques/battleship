@@ -25,15 +25,6 @@ module UI
       return answer
     end
 
-    # def prompt(message, validate_response)
-    #   reset_prompt
-    #   @window.setpos(0, 1)
-    #   @window.addstr(message)
-    #   @console.window.setpos(1, 2)
-    #   render
-    #   return @console.prompt(validate_response)
-    # end
-
     def reset_prompt
       @window.setpos(0, 1)
       @window.addstr(' ' * (@window.maxx - 1))

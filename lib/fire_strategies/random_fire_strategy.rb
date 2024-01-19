@@ -10,7 +10,7 @@ class RandomFireStrategy
     if position.nil?
       position = @board.cells.filter {|k, v| v.hit == false}.keys.sample
     end
-    result = @board.fire(position)
+    @board.fire(position)
   end
 
   def hunt_ships

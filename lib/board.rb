@@ -7,7 +7,8 @@ class Board
   ROWS = ('A'..'J')
   COLUMNS = (1..10)
 
-  FireResult = Struct.new(:position, :cell, :hit, :sunk, :ship)
+  FireResult = Struct.new(:position, :cell, :is_hit, :is_sunk, :ship)
+  # FireResult = Struct.new(:position, :cell, :hit_or_miss, :sunk, :ship)
 
   def initialize(ships=[])
     @ships = ships
@@ -48,11 +49,12 @@ class Board
     cells[position].hit = true
     if cells[position].ship
       cells[position].ship.hit
-      result.hit = true
-      result.ship = ships
-      result.sunk = cells[position].ship.sunk?
+      result.is_hit = true
+      result.ship = cells[position].ship
+      result.is_sunk = cells[position].ship.sunk?
     else
-      result.hit = false
+      result.is_hit = false
+      result.is_sunk = false
     end
     result
   end

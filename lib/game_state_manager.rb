@@ -46,8 +46,13 @@ class GameStateManager
         prompt: place_ships_prompt,
         handler: :manually_place_ships_handler,
       },
-      take_turn: {
+      user_turn: {
         prompt: "Select the coordinates to fire at:",
+        handler: :take_turn_handler,
+      },
+      ai_turn: {
+        prompt: "Computer Player is taking their turn...",
+        handler: :ai_turn_handler,
       },
     }
   end
@@ -58,6 +63,14 @@ class GameStateManager
 
   def process_input(input)
     self.send(actions[current_action][:handler], input)
+  end
+
+  def current_action_requires_input?
+    [:place_ships_decision, :manually_place_ships, :user_turn].include?(current_action)
+  end
+
+  def process_action
+    self.send(actions[current_action][:handler])
   end
 
   def place_ships_prompt
@@ -75,13 +88,13 @@ class GameStateManager
     elsif ['N', 'NO'].include?(input.upcase)
       _, messages = RandomShipPlacementStrategy.place_all(user.board)
       @messages += messages
-      @current_action = :take_turn
+      @current_action = :user_turn
     end
   end
 
   def manually_place_ships_handler(input)
     if @ships_to_place.empty?
-      @current_action = :take_turn
+      @current_action = :user_turn
     else
       ship = @ships_to_place.first
       success, messages = ManualShipPlacementStrategy.place_ship(ship, user.board, input)
@@ -90,9 +103,37 @@ class GameStateManager
         @ships_to_place.shift
       end
       if @ships_to_place.empty?
-        @current_action = :take_turn
+        @current_action = :user_turn
       end
     end
+  end
+
+  def take_turn_handler(position)
+    position = position.upcase
+    user_result = user.fire(position)
+    if user_result.is_hit
+      @messages << "Hit! You fired at #{position} and hit a #{user_result.ship.name}"
+      if user_result.is_sunk
+        @messages << "You sunk their #{user_result.ship.name}!"
+      end
+    else
+      @messages << "Miss! You fired at #{position} and missed."
+    end
+    @current_action = :ai_turn
+  end
+
+  def ai_turn_handler
+    sleep(1)
+    ai_result = ai.fire
+    if ai_result.is_hit
+      @messages << "Hit! They fired at #{ai_result.position} and hit your #{ai_result.ship.name}"
+      if ai_result.is_sunk
+        @messages << "They sunk your #{ai_result.ship.name}!"
+      end
+    else
+      @messages << "Miss! They fired at #{ai_result.position} and missed."
+    end
+    @current_action = :user_turn
   end
 
 end

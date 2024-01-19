@@ -28,13 +28,18 @@ module UI
 
     def run
       loop do
+        sleep(0.1)
         render
-        input = @console.prompt
-        if input == 'quit'
-          Curses.close_screen
-          exit
+        if @game_state.current_action_requires_input?
+          input = @console.prompt
+          if input == 'quit'
+            Curses.close_screen
+            exit
+          else
+            @game_state.process_input(input)
+          end
         else
-          @game_state.process_input(input)
+          @game_state.process_action
         end
       end
     end

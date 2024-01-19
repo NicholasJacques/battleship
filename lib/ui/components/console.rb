@@ -16,7 +16,7 @@ module UI
       Curses.curs_set(1)
       Curses.echo
       @window.setpos(1, 2)
-      answer = get_user_input_string
+      answer = @window.getstr
       reset_prompt
       answer
     end
@@ -28,15 +28,15 @@ module UI
       @window.refresh
     end
 
-    def get_user_input_string
-      input = @window.getstr
-      if input == 'quit'
-        Curses.close_screen
-        exit
-      else
-        input
-      end
-    end
+    # def get_user_input_string
+    #   input = @window.getstr
+    #   if input == 'quit'
+    #     Curses.close_screen
+    #     exit
+    #   else
+    #     input
+    #   end
+    # end
 
   end
 end
