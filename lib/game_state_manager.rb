@@ -114,11 +114,14 @@ class GameStateManager
 
   def take_turn_handler(position)
     position = position.upcase
-    user_result = user.fire(position)
-    if user_result.is_hit
+    fire_result = user.fire(position)
+    if fire_result.errors.any?
+      @messages += fire_result.errors
+      return
+    elsif fire_result.is_hit
       @messages << "Hit! You fired at #{position} and hit a ship!"
-      if user_result.is_sunk
-        @messages << "You sunk their #{user_result.ship.name}!"
+      if fire_result.is_sunk
+        @messages << "You sunk their #{fire_result.ship.name}!"
       end
     else
       @messages << "Miss! You fired at #{position} and missed."
@@ -128,14 +131,14 @@ class GameStateManager
 
   def ai_turn_handler
     sleep(1)
-    ai_result = ai.fire
-    if ai_result.is_hit
-      @messages << "Hit! They fired at #{ai_result.position} and hit your #{ai_result.ship.name}"
-      if ai_result.is_sunk
-        @messages << "They sunk your #{ai_result.ship.name}!"
+    fire_result = ai.fire
+    if fire_result.is_hit
+      @messages << "Hit! They fired at #{fire_result.position} and hit your #{fire_result.ship.name}"
+      if fire_result.is_sunk
+        @messages << "They sunk your #{fire_result.ship.name}!"
       end
     else
-      @messages << "Miss! They fired at #{ai_result.position} and missed."
+      @messages << "Miss! They fired at #{fire_result.position} and missed."
     end
     @current_action = :user_turn
   end

@@ -62,3 +62,12 @@ class ShipPlacementValidator
     end
   end
 end
+
+class ShipPlacementError < StandardError
+  attr_reader :errors
+
+  def initialize(msg: "Error placing ship.", errors: [])
+    @errors = errors
+    super(msg)
+  end
+end

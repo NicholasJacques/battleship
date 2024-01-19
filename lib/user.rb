@@ -24,7 +24,9 @@ class User
 
   def fire(position=nil)
     result = @fire_strategy.fire(position)
-    @fire_history << result
+    if result.errors.empty?
+      @fire_history << result
+    end
     result
   end
 

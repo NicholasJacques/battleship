@@ -1,13 +1,12 @@
 require './lib/cell.rb'
 require './lib/ship_placement_strategies/ship_placement_validator.rb'
+require './lib/fire_strategies/fire_result.rb'
 
 class Board
   attr_reader :ships, :cells, :grid
 
   ROWS = ('A'..'J')
   COLUMNS = (1..10)
-
-  FireResult = Struct.new(:position, :cell, :is_hit, :is_sunk, :ship)
 
   def initialize(ships=[])
     @ships = ships
@@ -44,7 +43,7 @@ class Board
   end
 
   def fire(position)
-    result = FireResult.new(position, cells[position])
+    result = FireResult.new(position, cell: cells[position])
     cells[position].hit = true
     if cells[position].ship
       cells[position].ship.hit
@@ -155,14 +154,5 @@ class Board
 
   def y_coordinate(position)
     position[0].upcase.bytes[0] - 65
-  end
-end
-
-class ShipPlacementError < StandardError
-  attr_reader :errors
-
-  def initialize(msg: "Error placing ship.", errors: [])
-    @errors = errors
-    super(msg)
   end
 end
