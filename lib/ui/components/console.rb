@@ -1,5 +1,3 @@
-require './lib/ui/components/base.rb'
-
 module UI
   class Console < Window
     def initialize(*args)

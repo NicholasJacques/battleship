@@ -1,5 +1,4 @@
 require 'curses'
-require './lib/ui/positionable.rb'
 
 module UI
   class MainMenu

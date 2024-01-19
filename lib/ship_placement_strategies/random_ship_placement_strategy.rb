@@ -1,5 +1,3 @@
-require './lib/board.rb'
-
 class RandomShipPlacementStrategy
   def self.place_all(board)
     messages = []
@@ -16,7 +14,6 @@ class RandomShipPlacementStrategy
     starting_column = random_index
     direction = random_direction
     directions_tried = []
-    messages = nil
     until ship_placed do
       begin
         positions = coordinates_for_ship_in_direction([starting_column, starting_row], direction, ship.size, board)

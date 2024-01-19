@@ -1,5 +1,4 @@
 require 'curses'
-require './lib/ui/positionable.rb'
 require './lib/ui/components/board_container.rb'
 require './lib/ui/components/console_container.rb'
 require './lib/ui/components/messages_container.rb'

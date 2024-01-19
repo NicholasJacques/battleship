@@ -11,7 +11,6 @@ module UI
       available_columns = @window.maxx - 2
       current_row = @window.maxy - 2
       @game_state.messages.reverse.each_with_index do |message, index|
-        message_rows = 0
         if message.length <= available_columns
           if available_rows >= 1
             @window.setpos(current_row, 2)

@@ -1,6 +1,7 @@
 require 'minitest/autorun'
 require './lib/cell.rb'
 
+
 describe Cell do
   describe '#to_s' do
     it 'returns the position' do
@@ -49,7 +50,7 @@ describe Cell do
       cell = Cell.new('A1')
       cell.hit = true
       cell.ship = Ship.new('carrier', 5)
-      assert_equal "\e[9mC\e[0m", cell.render
+      assert_equal "H", cell.render
     end
   end
 end

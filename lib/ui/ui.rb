@@ -1,21 +1,11 @@
-require 'curses'
-require './lib/game.rb'
+require './lib/game_state_manager.rb'
 require './lib/ui/screens/start_screen.rb'
 require './lib/ui/screens/main_menu.rb'
 require './lib/ui/screens/game_screen.rb'
-require './lib/game_state_manager.rb'
 
 module UI
   class UI
     attr_reader :window
-  
-    def initialize
-      # @game = Game.new
-      # @window = Curses.init_screen
-      # Curses.cbreak
-      # Curses.noecho
-      # Curses.start_color
-    end
 
     def start_screen
       @start_screen ||= StartScreen.new

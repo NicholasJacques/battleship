@@ -1,13 +1,8 @@
-require 'io/console'
-
-require_relative './ship.rb'
-require_relative './user.rb'
 require './lib/board.rb'
+require './lib/user.rb'
+require './lib/ship.rb'
 require './lib/ship_placement_strategies/random_ship_placement_strategy.rb'
-require './lib/ship_placement_strategies/manual_ship_placement_strategy.rb'
 require './lib/fire_strategies/fire_strategy_factory.rb'
-require './lib/ui/ui.rb'
-require 'curses'
 
 class Game
   class << self

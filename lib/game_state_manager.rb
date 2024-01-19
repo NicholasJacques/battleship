@@ -1,6 +1,8 @@
 require 'forwardable'
 require 'curses'
 
+require './lib/game.rb'
+
 class GameStateManager
   extend Forwardable
 

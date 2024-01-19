@@ -1,4 +1,3 @@
-require './lib/ui/components/base.rb'
 require './lib/ui/components/console.rb'
 
 module UI
