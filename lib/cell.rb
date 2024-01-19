@@ -16,10 +16,6 @@ class Cell
     @hit
   end
 
-  def hit_or_miss
-    @hit && @ship ? :hit : :miss
-  end
-
   def render(show_ships: true)
     if @ship && @ship.sunk?
       ship.name[0].upcase

@@ -1,16 +1,16 @@
-# Dir["#{File.dirname(__FILE__)}/lib/**/*.rb"].each do |file|
-#   require file unless file == './lib/runner.rb'
-# end
+Dir["#{File.dirname(__FILE__)}/lib/**/*.rb"].each do |file|
+  require file unless file == './lib/runner.rb'
+end
 
-# require 'pry-byebug'; binding.pry
-# puts 'exit'
+require 'pry-byebug'; binding.pry
+puts 'exit'
 
-require 'curses'
+# require 'curses'
 
-Curses.init_screen
+# Curses.init_screen
 
-scr = Curses.init_screen()
-starting_height = 0
+# scr = Curses.init_screen()
+# starting_height = 0
 
 # window = Curses::Window.new(12, 22, 1, 1)
 # window.box('|', '-')
@@ -27,8 +27,8 @@ starting_height = 0
 # window.getch
 
 
-pad = Curses::Pad.new(20, 30)
-pad.box('|', '-')
+# pad = Curses::Pad.new(20, 30)
+# pad.box('|', '-')
 # 20.times do |i|
 #   pad.resize(i + 1, 20)
 #   pad.setpos(i, 1)

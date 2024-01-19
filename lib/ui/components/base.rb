@@ -1,3 +1,5 @@
+require './lib/ui/positionable.rb'
+
 module UI
   class Base
     def initialize(parent, game_state)

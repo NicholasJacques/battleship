@@ -8,7 +8,6 @@ class Board
   COLUMNS = (1..10)
 
   FireResult = Struct.new(:position, :cell, :is_hit, :is_sunk, :ship)
-  # FireResult = Struct.new(:position, :cell, :hit_or_miss, :sunk, :ship)
 
   def initialize(ships=[])
     @ships = ships
@@ -98,21 +97,45 @@ class Board
     ].map{|position| cells[position] }.compact
   end
 
-  def north_and_south_of_column(positions)
-    top = positions.min_by {|position| y_coordinate(position) }
-    bottom = positions.max_by {|position| y_coordinate(position) }
-    north = convert_cell_indexes_to_position(x_coordinate(top), y_coordinate(top)-1)
-    south = convert_cell_indexes_to_position(x_coordinate(bottom), y_coordinate(bottom)+1)
-    [north, south].map {|position| cells[position] }.compact
+  def north_of_cell(cell)
+    x, y = coordinates(cell.position)
+    cells[convert_cell_indexes_to_position(x, y-1)]
   end
 
-  def left_and_right_of_row(positions)
-    start = positions.min_by {|position| x_coordinate(position) }
-    endd = positions.max_by {|position| x_coordinate(position) }
-    left = convert_cell_indexes_to_position(x_coordinate(start)-1, y_coordinate(start))
-    right = convert_cell_indexes_to_position(x_coordinate(endd)+1, y_coordinate(endd))
-    [left, right].map {|position| cells[position] }.compact
+  def south_of_cell(cell)
+    x, y = coordinates(cell.position)
+    cells[convert_cell_indexes_to_position(x, y+1)]
   end
+
+  def east_of_cell(cell)
+    x, y = coordinates(cell.position)
+    cells[convert_cell_indexes_to_position(x+1, y)]
+  end
+
+  def west_of_cell(cell)
+    x, y = coordinates(cell.position)
+    cells[convert_cell_indexes_to_position(x-1, y)]
+  end
+
+  def north_and_south_of_column(list_of_cells)
+    top = list_of_cells.min_by {|cell| y_coordinate(cell.position) }
+    bottom = list_of_cells.max_by {|cell| y_coordinate(cell.position) }
+    [north_of_cell(top), south_of_cell(bottom)].compact
+  end
+
+  def east_and_west_of_row(list_of_cells)
+    start = list_of_cells.min_by {|cell| x_coordinate(cell.position) }
+    endd = list_of_cells.max_by {|cell| x_coordinate(cell.position) }
+    [west_of_cell(start), east_of_cell(endd)].compact
+  end
+
+  # def left_and_right_of_row(positions)
+  #   start = positions.min_by {|position| x_coordinate(position) }
+  #   endd = positions.max_by {|position| x_coordinate(position) }
+  #   left = convert_cell_indexes_to_position(x_coordinate(start)-1, y_coordinate(start))
+  #   right = convert_cell_indexes_to_position(x_coordinate(endd)+1, y_coordinate(endd))
+  #   [left, right].map {|position| cells[position] }.compact
+  # end
 
   # def valid_fire_position?(position)
   #   cells[position] && !cells[position].is_hit?

@@ -114,7 +114,7 @@ class GameStateManager
     position = position.upcase
     user_result = user.fire(position)
     if user_result.is_hit
-      @messages << "Hit! You fired at #{position} and hit a #{user_result.ship.name}"
+      @messages << "Hit! You fired at #{position} and hit a ship!"
       if user_result.is_sunk
         @messages << "You sunk their #{user_result.ship.name}!"
       end

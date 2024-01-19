@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require './lib/cell.rb'
+require './lib/ship.rb'
 
 
 describe Cell do
