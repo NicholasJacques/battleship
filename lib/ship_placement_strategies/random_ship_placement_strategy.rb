@@ -2,9 +2,12 @@ require './lib/board.rb'
 
 class RandomShipPlacementStrategy
   def self.place_all(board)
+    messages = []
     board.ships.each do |ship|
-      place_ship(ship, board)
+      messages << place_ship(ship, board)
     end
+    return [true, messages]
+
   end
 
   def self.place_ship(ship, board)
@@ -13,10 +16,12 @@ class RandomShipPlacementStrategy
     starting_column = random_index
     direction = random_direction
     directions_tried = []
+    messages = nil
     until ship_placed do
       begin
         positions = coordinates_for_ship_in_direction([starting_column, starting_row], direction, ship.size, board)
         board.place(positions, ship)
+        message = "Placed #{ship.name} at #{positions.join(' ')}"
         ship_placed = true
       rescue ShipPlacementError
         directions_tried << direction
@@ -28,6 +33,7 @@ class RandomShipPlacementStrategy
         end  
       end
     end
+    return message
   end
 
   def self.coordinates_for_ship_in_direction(starting_cell, direction, ship_size, board)

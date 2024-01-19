@@ -71,11 +71,10 @@ class GameStateManager
 
   def place_ships_decision_handler(input)
     if ['Y', 'YES'].include?(input.upcase)
-      user.ship_placement_strategy = ManualShipPlacementStrategy
       @current_action = :manually_place_ships
     elsif ['N', 'NO'].include?(input.upcase)
-      user.ship_placement_strategy = RandomShipPlacementStrategy
-      user.place_ships
+      _, messages = RandomShipPlacementStrategy.place_all(user.board)
+      @messages += messages
       @current_action = :take_turn
     end
   end
