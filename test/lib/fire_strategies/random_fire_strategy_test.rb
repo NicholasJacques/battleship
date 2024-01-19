@@ -266,6 +266,25 @@ describe RandomFireStrategy do
           assert_equal 'E5', fire_strategy.fire.position
         end
       end
+
+      describe 'when there adjacet hits and adjacent misses in both directions' do
+        it 'fires in adjacent cells in line with either direction' do
+          ship = Ship.new('carrier', 5)
+          opponent_board = Board.new([ship])
+          user = User.new
+          ship_positions = ['F4', 'F5', 'F6', 'F7', 'F8']
+          opponent_board.place(ship_positions, ship)
+          user.fire_history = [
+            opponent_board.fire('F7'),
+            opponent_board.fire('E7'),
+            opponent_board.fire('G7'),
+            opponent_board.fire('F6'),
+          ]
+          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+
+          assert_includes ['F5', 'F8'], fire_strategy.fire.position
+        end
+      end
     end
 
     describe 'when the adjacent hits are verticle' do

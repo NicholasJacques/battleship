@@ -1,6 +1,7 @@
 require 'curses'
 require './lib/ui/components/board_container.rb'
 require './lib/ui/components/console_container.rb'
+require './lib/ui/components/messages.rb'
 require './lib/ui/components/messages_container.rb'
 
 module UI
@@ -13,7 +14,8 @@ module UI
       @user_board = BoardContainer.new(self, @game_state, 12, 22, 3, 3, {label: @game_state.user_name, show_ships: true, board_data: @game_state.user_board})
       @ai_board = BoardContainer.new(self, @game_state, 12, 22, 3, 30, {label: 'Opponent', show_ships: false, board_data: @game_state.ai_board})
       @console = ConsoleContainer.new(self, @game_state, 4, 54, 36, 3)
-      @messages = Messages.new(self, @game_state, 10, 54, 25, 3)
+      # @messages = Messages.new(self, @game_state, 10, 54, 25, 3)
+      @messages = MessagesContainer.new(self, @game_state, 11, 54, 24, 3)
       @child_windows = [@user_board, @ai_board, @console, @messages]
       Curses.start_color
     end

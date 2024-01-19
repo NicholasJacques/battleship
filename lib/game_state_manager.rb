@@ -2,6 +2,8 @@ require 'forwardable'
 require 'curses'
 
 require './lib/game.rb'
+require './lib/ship_placement_strategies/random_ship_placement_strategy.rb'
+require './lib/ship_placement_strategies/manual_ship_placement_strategy.rb'
 
 class GameStateManager
   extend Forwardable

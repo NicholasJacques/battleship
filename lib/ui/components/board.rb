@@ -26,8 +26,8 @@ module UI
       end
     end
 
-    def to_s
-      "Board"
-    end
   end
 end
+
+# Battleship
+# [X|X|X|X]
