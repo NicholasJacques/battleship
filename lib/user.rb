@@ -18,10 +18,6 @@ class User
     @board.ships.all? { |ship| ship.sunk? }
   end
 
-  # def place_ship(ship, positions)
-  #   @ship_placement_strategy.place_all(@board)
-  # end
-
   def fire(position=nil)
     result = @fire_strategy.fire(position)
     if result.errors.empty?

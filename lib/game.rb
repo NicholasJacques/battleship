@@ -29,8 +29,6 @@ class Game
       fire_strategy: FireStrategyFactory.create(:manual, ai_board),
     )
     @ai = User.new(board: ai_board)
-    @ai.fire_strategy = FireStrategyFactory.create(:random, @user.board, user: @ai)
-    RandomShipPlacementStrategy.place_all(ai.board)
   end
 
   def over?

@@ -20,8 +20,12 @@ class GameStateManager
     @current_action = :place_ships_decision
     @ships_to_place = @game.user.board.ships.dup
     @messages = []
-    # @messages = ["Line 1", "Line 2", "Line 3", "Line 4", "Placed carrier", "Placed battleship", "Placed cruiser", "Ship must be placed vertically or horizontal in sequential cells."]
-    # @messages = ["Ship must be placed vertically or horizontal in sequential cells."]
+    setup_game
+  end
+
+  def setup_game
+    game.ai.fire_strategy = FireStrategyFactory.create(:random, game.user.board, user: game.ai)
+    RandomShipPlacementStrategy.place_all(game.ai.board)
   end
 
   # Accessor methods for game state
@@ -52,7 +56,7 @@ class GameStateManager
       },
       user_turn: {
         prompt: "Select the coordinates to fire at:",
-        handler: :take_turn_handler,
+        handler: :user_turn_handler,
       },
       ai_turn: {
         prompt: "Computer Player is taking their turn...",
@@ -92,27 +96,25 @@ class GameStateManager
     elsif ['N', 'NO'].include?(input.upcase)
       _, messages = RandomShipPlacementStrategy.place_all(user.board)
       @messages += messages
+      @messages << "All ships placed! Ready to begin."
       @current_action = :user_turn
     end
   end
 
   def manually_place_ships_handler(input)
+    ship = @ships_to_place.first
+    success, messages = ManualShipPlacementStrategy.place_ship(ship, user.board, input)
+    @messages += messages
+    if success
+      @ships_to_place.shift
+    end
     if @ships_to_place.empty?
+      @messages << "All ships placed! Ready to begin."
       @current_action = :user_turn
-    else
-      ship = @ships_to_place.first
-      success, messages = ManualShipPlacementStrategy.place_ship(ship, user.board, input)
-      @messages += messages
-      if success
-        @ships_to_place.shift
-      end
-      if @ships_to_place.empty?
-        @current_action = :user_turn
-      end
     end
   end
 
-  def take_turn_handler(position)
+  def user_turn_handler(position)
     position = position.upcase
     fire_result = user.fire(position)
     if fire_result.errors.any?
@@ -130,7 +132,7 @@ class GameStateManager
   end
 
   def ai_turn_handler
-    sleep(1)
+    sleep(0.5)
     fire_result = ai.fire
     if fire_result.is_hit
       @messages << "Hit! They fired at #{fire_result.position} and hit your #{fire_result.ship.name}"

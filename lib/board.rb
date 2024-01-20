@@ -23,14 +23,6 @@ class Board
     end
   end
 
-  def to_s
-    "  " + (1..10).to_a.join(' ') + "\n" + @grid.zip(('A'..'J').to_a).map { |row, row_name| row_name + ' ' + row.join(' ') }.join("\n")
-  end
-
-  def render(show_ships: true)
-    "  " + (1..10).to_a.join(' ') + "\n" + @grid.zip(('A'..'J').to_a).map { |row, row_name| row_name + ' ' + row.map {|cell| cell.render(show_ships: show_ships)}.join(' ') }.join("\n")
-  end
-
   def place(positions, ship)
     if positions.is_a?(String)
       positions = positions.upcase.split
@@ -155,4 +147,9 @@ class Board
   def y_coordinate(position)
     position[0].upcase.bytes[0] - 65
   end
+
+    # not used in game logic but useful for printing out the board
+    def render(show_ships: true)
+      "  " + (1..10).to_a.join(' ') + "\n" + @grid.zip(('A'..'J').to_a).map { |row, row_name| row_name + ' ' + row.map {|cell| cell.render(show_ships: show_ships)}.join(' ') }.join("\n")
+    end
 end
