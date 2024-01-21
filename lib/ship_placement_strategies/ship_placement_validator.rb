@@ -1,4 +1,5 @@
 class ShipPlacementValidator
+  private_class_method :new
 
   def self.validate_placement(positions, ship, board)
     new(positions, ship, board).validate_placement

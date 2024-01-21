@@ -1,12 +1,14 @@
 class FirePositionValidator
+  private_class_method :new
+
+  def self.validate_fire_position(position, board)
+    new(position, board).validate_fire_position
+  end
+
   def initialize(position, board)
     @position = position
     @board = board
     @errors = []
-  end
-
-  def self.validate_fire_position(position, board)
-    new(position, board).validate_fire_position
   end
 
   def validate_fire_position
