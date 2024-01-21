@@ -1,5 +1,8 @@
 class ShipPlacementValidator
-  attr_reader :errors
+
+  def self.validate_placement(positions, ship, board)
+    new(positions, ship, board).validate_placement
+  end
 
   def initialize(positions, ship, board)
     @positions = positions
@@ -8,19 +11,15 @@ class ShipPlacementValidator
     @errors = []
   end
 
-  def has_errors?
-    !errors.empty?
-  end
-
   def validate_placement
     validate_ship_size
     validate_cells_are_in_order
     validate_each_cell
-    raise ShipPlacementError.new(errors: errors) if has_errors?
+    raise ShipPlacementError.new(errors: errors) if errors.any?
   end
 
   private
-  attr_writer :errors
+  attr_accessor :errors
   attr_reader :positions, :ship, :board
 
   def validate_ship_size
@@ -33,15 +32,14 @@ class ShipPlacementValidator
 
   def validate_cells_are_in_order
     return if positions.size <= 1
-    coordinates = positions.map { |position| board.coordinates(position) }
+    coordinates = positions.map { |position| board.coordinates(position) }.sort
     starting_x = coordinates[0][0]
     starting_y = coordinates[0][1]
-
-    is_horizontal = (starting_x...starting_x+@positions.size).to_a == coordinates.map {|coordinate| coordinate[0] }
-    is_vertical = (starting_y...starting_y+@positions.size).to_a == coordinates.map {|coordinate| coordinate[1] }
+    is_horizontal = (starting_x...starting_x+positions.size).to_a.product([starting_y]) == coordinates
+    is_vertical = [starting_x].product((starting_y...starting_y+positions.size).to_a) == coordinates
 
     if (!is_vertical && !is_horizontal) || (is_horizontal && is_vertical)
-      @errors << "Ship must be placed vertically or horizontal in sequential cells."
+      errors << "Ship must be placed vertically or horizontal in sequential cells."
     end
 
   end

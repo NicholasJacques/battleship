@@ -27,9 +27,7 @@ class Board
     if positions.is_a?(String)
       positions = positions.upcase.split
     end
-    validator = ShipPlacementValidator.new(positions, ship, self)
-    validator.validate_placement
-
+    ShipPlacementValidator.validate_placement(positions, ship, self)
     positions.each {|position| cells[position].ship = ship }
     ship.positions = positions
   end
