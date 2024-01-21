@@ -2,12 +2,13 @@ require './lib/ui/ui.rb'
 
 
 class Runner
+  attr_reader :ui
   def initialize
     @ui = UI::UI.new
   end
 
   def run
-    @ui.start
+    ui.start
   end
 end
 

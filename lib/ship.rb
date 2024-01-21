@@ -10,11 +10,11 @@ class Ship
   end
 
   def sunk?
-    @hits == @size
+    hits == @size
   end
 
   def hit
-    @hits += 1
+    self.hits += 1
   end
 
   def <=>(other)
@@ -23,10 +23,13 @@ class Ship
 
   def ==(other)
     return false if other.nil?
-    @name == other.name &&
-      @size == other.size &&
-      @hits == other.hits &&
-      @positions == other.positions
+    name == other.name &&
+      size == other.size &&
+      hits == other.hits &&
+      positions == other.positions
   end
+
+  private
+  attr_writer :hits
 
 end

@@ -2,8 +2,8 @@ Dir["#{File.dirname(__FILE__)}/lib/**/*.rb"].each do |file|
   require file unless file == './lib/runner.rb'
 end
 
-require 'pry-byebug'; binding.pry
-puts 'exit'
+# require 'pry-byebug'; binding.pry
+# puts 'exit'
 
 # require 'curses'
 
@@ -37,9 +37,9 @@ puts 'exit'
 # end
 
 
-pad.refresh(0, 0, 2, 2, 22, 32)
+# pad.refresh(0, 0, 2, 2, 22, 32)
 
-pad.getch
+# pad.getch
 
 
 
@@ -57,6 +57,3 @@ pad.getch
 #   scr.addstr("Input: #{input.inspect} #{input}, #{m.bstate}")
 #   scr.refresh
 # end
-
-# 2097152
-# 65536

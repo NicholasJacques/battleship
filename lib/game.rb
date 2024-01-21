@@ -17,9 +17,8 @@ class Game
     end
   end
 
-  attr_reader :user, :ai, :current_action, :messages
-  def initialize(state_manager)
-    @state_manager = state_manager
+  attr_reader :user, :ai
+  def initialize
     ai_board = Board.new(Game.ships)
     user_board = Board.new(Game.ships)
 

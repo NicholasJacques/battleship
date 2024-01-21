@@ -12,7 +12,7 @@ module UI
     end
 
     def game_screen
-      @game_screen ||= GameScreen.new(@game_state)
+      @game_screen ||= GameScreen.new(GameStateManager.create_game)
     end
 
     def menu_screen
@@ -39,7 +39,6 @@ module UI
     end
 
     def play_game
-      @game_state = GameStateManager.create_game
       game_screen.render
       game_screen.run
       game_screen.tear_down

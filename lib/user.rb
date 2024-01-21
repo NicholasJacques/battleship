@@ -15,13 +15,13 @@ class User
   end
   
   def lost?
-    @board.ships.all? { |ship| ship.sunk? }
+    board.ships.all? { |ship| ship.sunk? }
   end
 
   def fire(position=nil)
-    result = @fire_strategy.fire(position)
+    result = fire_strategy.fire(position)
     if result.errors.empty?
-      @fire_history << result
+      fire_history << result
     end
     result
   end
