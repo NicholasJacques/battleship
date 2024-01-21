@@ -9,23 +9,23 @@ class Cell
   end
 
   def to_s
-    @position
+    position
   end
 
   def is_hit?
-    @hit
+    hit
   end
 
   def is_ship_hit?
-    @hit && @ship
+    is_hit? && ship
   end
 
   def render(show_ships: true)
-    if is_ship_hit? && @ship.sunk?
+    if is_ship_hit? && ship.sunk?
       ship.name[0].upcase
     elsif is_ship_hit?
       'H'
-    elsif @ship && show_ships
+    elsif ship && show_ships
       ship.name[0].upcase
     elsif is_hit?
       "X"
@@ -36,6 +36,6 @@ class Cell
 
   def ==(other)
     return false if other.nil?
-    @position == other.position
+    position == other.position
   end
 end

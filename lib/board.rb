@@ -30,7 +30,7 @@ class Board
     validator = ShipPlacementValidator.new(positions, ship, self)
     validator.validate_placement
 
-    positions.each {|position| @cells[position].ship = ship }
+    positions.each {|position| cells[position].ship = ship }
     ship.positions = positions
   end
 

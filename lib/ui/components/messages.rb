@@ -2,15 +2,15 @@ module UI
   class Messages < Window
 
     def render
-      @window.clear
-      available_rows = @window.maxy
-      available_columns = @window.maxx - 1
-      current_row = @window.maxy - 1
-      @game_state.messages.reverse.each_with_index do |message, index|
+      window.clear
+      available_rows = window.maxy
+      available_columns = window.maxx - 1
+      current_row = window.maxy - 1
+      game_state.messages.reverse.each_with_index do |message, index|
         if message.length <= available_columns
           if available_rows >= 1
-            @window.setpos(current_row, 2)
-            @window.addstr(message)
+            window.setpos(current_row, 2)
+            window.addstr(message)
             current_row -= 1
             available_rows -= 1
           else
@@ -38,15 +38,15 @@ module UI
             break
           else
             lines.reverse.each_with_index do |line|
-              @window.setpos(current_row, 2)
-              @window.addstr(line)
+              window.setpos(current_row, 2)
+              window.addstr(line)
               current_row -= 1
               available_rows -= 1
             end
           end
         end
       end
-      @window.refresh
+      window.refresh
     end
 
   end

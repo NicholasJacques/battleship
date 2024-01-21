@@ -4,6 +4,7 @@ module UI
   class MainMenu
     include Positionable
 
+    attr_reader :window
     def initialize
       @window = Curses.stdscr
       Curses.stdscr.keypad = true
@@ -16,13 +17,13 @@ module UI
         Curses::Item.new("Exit", ''),
       ])
       height, width = @menu.scale
-      top = ((@window.maxy - height) / 2) + 3
-      left = (@window.maxx - width) / 2
+      top = ((window.maxy - height) / 2) + 3
+      left = (window.maxx - width) / 2
 
-      menu_window = @window.derwin(height, width, top, left)
+      menu_window = window.derwin(height, width, top, left)
       @menu.set_sub(menu_window)
       @menu.post
-      @window.refresh
+      window.refresh
     end
 
     def run
@@ -43,7 +44,7 @@ module UI
 
     def tear_down
       Curses.stdscr.keypad = true
-      @window.clear
+      window.clear
       Curses.close_screen
     end
   end

@@ -6,14 +6,14 @@ module UI
 
     def initialize(*args)
       super(*args)
-      @messages = Messages.new(self, @game_state, 9, 52, 1, 1)
-      @child_windows = [@messages]
+      @messages = Messages.new(self, game_state, 9, 52, 1, 1)
+      children << @messages
     end
 
     def render
-      @window.box('|', '-')
+      window.box('|', '-')
       center_x(0, " Messages ")
-      @child_windows.each(&:render)
+      children.each(&:render)
     end
 
   end

@@ -5,6 +5,7 @@ module UI
   class StartScreen
     include Positionable
 
+    attr_reader :window
     def initialize()
       @window = Curses.stdscr
       Curses.cbreak
