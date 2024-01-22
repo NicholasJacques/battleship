@@ -5,27 +5,24 @@ class RandomShipPlacementStrategy
       messages << place_ship(ship, board)
     end
     return [true, messages]
-
   end
 
   def self.place_ship(ship, board)
     ship_placed = false
-    starting_row = random_index
-    starting_column = random_index
+    starting_coordinates = [random_index, random_index]
     direction = random_direction
     directions_tried = []
     until ship_placed do
       begin
-        positions = coordinates_for_ship_in_direction([starting_column, starting_row], direction, ship.size, board)
+        positions = coordinates_for_ship_in_direction(starting_coordinates, direction, ship.size, board)
         board.place(positions, ship)
         message = "Placed #{ship.name} at #{positions.join(' ')}"
         ship_placed = true
       rescue ShipPlacementError
         directions_tried << direction
-        direction = random_direction(directions_tried)
+        direction = random_direction(exclude=directions_tried)
         if direction.nil?
-          starting_row = random_index
-          starting_column = random_index
+          starting_coordinates = [random_index, random_index]
           direction = random_direction
         end  
       end
@@ -58,6 +55,7 @@ class RandomShipPlacementStrategy
         .map {|x, y| board.convert_cell_indexes_to_position(x, y)}
     end
   end
+  private_class_method :coordinates_for_ship_in_direction
 
   def self.random_index
     (0..9).to_a.sample
