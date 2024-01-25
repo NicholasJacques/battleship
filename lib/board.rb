@@ -35,10 +35,6 @@ class Board
     result
   end
 
-  # def get_cell(position)
-  #   @grid[y_coordinate(position)][x_coordinate(position)]
-  # end
-
   def adjacent_cells(cell)
     raise ArgumentError.new("Invalid position: #{cell.position}") unless cells[cell.position]
     [
@@ -47,24 +43,6 @@ class Board
       east_of_cell(cell),
       west_of_cell(cell),
     ].compact
-  end
-
-  def adjacent_horizontal_cells(position)
-    raise ArgumentError.new("Invalid position: #{position}") unless cells[position]
-
-    x, y = coordinates(position)
-    [
-      convert_cell_indexes_to_position(x-1, y), #east
-      convert_cell_indexes_to_position(x+1, y), #west
-    ].map{|position| cells[position] }.compact
-  end
-
-  def adjacent_vertical_cells(position)
-    x, y = coordinates(position)
-    [
-      convert_cell_indexes_to_position(x, y-1), #north
-      convert_cell_indexes_to_position(x, y+1), #south
-    ].map{|position| cells[position] }.compact
   end
 
   def north_of_cell(cell)
@@ -99,10 +77,6 @@ class Board
     endd = list_of_cells.max_by {|cell| x_coordinate(cell.position) }
     [east_of_cell(start), west_of_cell(endd)].compact
   end
-
-  # def valid_fire_position?(position)
-  #   cells[position] && !cells[position].is_hit?
-  # end
   
   def coordinates(position)
     [x_coordinate(position), y_coordinate(position)]
@@ -110,14 +84,6 @@ class Board
 
   def convert_cell_indexes_to_position(x, y)
     [(y+65).chr, x+1].join
-  end
-
-  def x_coordinate(position)
-    position[1..].to_i - 1
-  end
-
-  def y_coordinate(position)
-    position[0].upcase.bytes[0] - 65
   end
 
   # not used in game logic but useful for printing out the board
@@ -144,6 +110,14 @@ class Board
     end
 
     result
+  end
+
+  def x_coordinate(position)
+    position[1..].to_i - 1
+  end
+
+  def y_coordinate(position)
+    position[0].upcase.bytes[0] - 65
   end
 
 end

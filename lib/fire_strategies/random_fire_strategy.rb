@@ -22,7 +22,6 @@ class RandomFireStrategy
   private
 
   def hunt_ships
-    position = nil
     user.fire_history.reverse.each do |fire_result|
       cell = fire_result.cell
       if pursue_ship?(fire_result)
@@ -41,16 +40,15 @@ class RandomFireStrategy
             vertically_adjacent_hits << cell
             candidates += board.north_and_south_of_column(vertically_adjacent_hits)
           end
-          if candidates.filter {|cell| cell.hit == false}.empty?
-            Curses.close_screen
-            require 'pry-byebug'; binding.pry
-          end
+          # if candidates.filter {|cell| cell.hit == false}.empty?
+          #   Curses.close_screen
+          #   require 'pry-byebug'; binding.pry
+          # end
 
           return candidates.filter {|cell| cell.hit == false}.sample.position
         end
       end
     end
-    return position
   end
 
   def pursue_ship?(fire_result)
