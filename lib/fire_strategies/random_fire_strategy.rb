@@ -26,12 +26,11 @@ class RandomFireStrategy
     user.fire_history.reverse.each do |fire_result|
       cell = fire_result.cell
       if pursue_ship?(fire_result)
-        adjacent_cells = board.adjacent_cells(cell)
-        adjacent_hits = adjacent_cells.filter {|cell| cell.is_ship_hit? && !cell.ship.sunk?}
-        if adjacent_hits.any?
-          horizontally_adjacent_hits = find_horizontally_adjacent_hits(cell)
-          vertically_adjacent_hits = find_vertically_adjacent_hits(cell)
-
+        horizontally_adjacent_hits = find_horizontally_adjacent_hits(cell)
+        vertically_adjacent_hits = find_vertically_adjacent_hits(cell)
+        if !horizontally_adjacent_hits.any? && !vertically_adjacent_hits.any?
+          return board.adjacent_cells(cell).filter {|cell| cell.hit == false}.sample.position
+        else
           candidates = []
           if horizontally_adjacent_hits.any?
             horizontally_adjacent_hits << cell
@@ -42,11 +41,12 @@ class RandomFireStrategy
             vertically_adjacent_hits << cell
             candidates += board.north_and_south_of_column(vertically_adjacent_hits)
           end
-          position = candidates.filter {|cell| cell.hit == false}.sample.position
-          break
-        else
-          position = board.adjacent_cells(cell).filter {|cell| cell.hit == false}.sample.position
-          break
+          if candidates.filter {|cell| cell.hit == false}.empty?
+            Curses.close_screen
+            require 'pry-byebug'; binding.pry
+          end
+
+          return candidates.filter {|cell| cell.hit == false}.sample.position
         end
       end
     end
@@ -63,7 +63,7 @@ class RandomFireStrategy
     current_cell = cell
     loop do
       cell_to_the_north = board.north_of_cell(current_cell)
-      break if cell_to_the_north.nil? || !cell_to_the_north.is_ship_hit?
+      break if cell_to_the_north.nil? || !cell_to_the_north.is_ship_hit? || cell_to_the_north.ship.sunk?
       adjacent_hits << cell_to_the_north
       current_cell = cell_to_the_north
     end
@@ -71,7 +71,7 @@ class RandomFireStrategy
     current_cell = cell
     loop do
       cell_to_the_south = board.south_of_cell(current_cell)
-      break if cell_to_the_south.nil? || !cell_to_the_south.is_ship_hit?
+      break if cell_to_the_south.nil? || !cell_to_the_south.is_ship_hit? || cell_to_the_south.ship.sunk?
       adjacent_hits << cell_to_the_south
       current_cell = cell_to_the_south
     end
@@ -84,7 +84,7 @@ class RandomFireStrategy
     current_cell = cell
     loop do
       cell_to_the_east = board.east_of_cell(current_cell)
-      break if cell_to_the_east.nil? || !cell_to_the_east.is_ship_hit?
+      break if cell_to_the_east.nil? || !cell_to_the_east.is_ship_hit? || cell_to_the_east.ship.sunk?
       adjacent_hits << cell_to_the_east
       current_cell = cell_to_the_east
     end
@@ -92,7 +92,7 @@ class RandomFireStrategy
     current_cell = cell
     loop do
       cell_to_the_west = board.west_of_cell(current_cell)
-      break if cell_to_the_west.nil? || !cell_to_the_west.is_ship_hit?
+      break if cell_to_the_west.nil? || !cell_to_the_west.is_ship_hit? || cell_to_the_west.ship.sunk?
       adjacent_hits << cell_to_the_west
       current_cell = cell_to_the_west
     end

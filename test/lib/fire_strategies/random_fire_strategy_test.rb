@@ -269,8 +269,19 @@ describe RandomFireStrategy do
 
       describe 'when there adjacet hits and adjacent misses in both directions' do
         it 'fires in adjacent cells in line with either direction' do
+          #   1 2 3 4 5 6 7 8 9 10
+          # A . . . . . . . . . .
+          # B . . . . . . . . . .
+          # C . . . . . . . . . .
+          # D . . . . . . . . . .
+          # E . . . . . . X . . .
+          # F . . . C C # c # . .
+          # G . . . . . . X . . .
+          # H . . . . . . . . . .
+          # I . . . . . . . . . .
+          # J . . . . . . . . . .
+          
           # skip
-
           ship = Ship.new('carrier', 5)
           opponent_board = Board.new(ships: [ship])
           user = User.new
@@ -285,6 +296,42 @@ describe RandomFireStrategy do
           fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
           assert_includes ['F5', 'F8'], fire_strategy.fire.position
+        end
+      end
+
+      describe 'when one of the adjacent hits is a ship that has already been sunk' do
+        it 'does not fire in that direction' do
+          #   1 2 3 4 5 6 7 8 9 10
+          # A . . . . . . . . . .
+          # B . . . . . . . . . .
+          # C . B # b b d d d . .
+          # D . . . . . . . . . .
+          # E . . . . . . . . . .
+          # F . . . . . . . . . .
+          # G . . . . . . . . . .
+          # H . . . . . . . . . .
+          # I . . . . . . . . . .
+          # J . . . . . . . . . .
+
+
+          ship_1 = Ship.new('battleship', 4)
+          ship_2 = Ship.new('destroyer', 3)
+          ship_1_positions = ['C2', 'C3', 'C4', 'C5']
+          ship_2_positions = ['C6', 'C7', 'C8']
+          opponent_board = Board.new(ships: [ship_1, ship_2])
+          user = User.new
+          opponent_board.place(ship_1_positions, ship_1)
+          opponent_board.place(ship_2_positions, ship_2)
+          user.fire_history = [
+            opponent_board.fire('C6'),
+            opponent_board.fire('C7'),
+            opponent_board.fire('C8'),
+            opponent_board.fire('C4'),
+            opponent_board.fire('C5'),
+          ]
+
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
+          assert_equal 'C3', fire_strategy.fire.position
         end
       end
     end
@@ -449,6 +496,7 @@ describe RandomFireStrategy do
         end
       end
     end
+    
 
     # describe 'when there are adjacent hits in both directions' do
     #   it 'fires in adjacent cells in line with either direction' do
