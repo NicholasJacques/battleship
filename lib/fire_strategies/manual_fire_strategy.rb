@@ -1,5 +1,6 @@
 require './lib/fire_strategies/fire_position_validator.rb'
 require './lib/fire_strategies/fire_result.rb'
+require 'curses'
 
 class ManualFireStrategy
   attr_reader :board
@@ -14,7 +15,7 @@ class ManualFireStrategy
       FirePositionValidator.validate_fire_position(position: position, board: board)
       result = board.fire(position)
     rescue FirePositionError => error
-      result = FireResult.new(position, errors: error.errors)
+      result = FireResult.new(position: position, errors: error.errors)
     end
     return result
   end
