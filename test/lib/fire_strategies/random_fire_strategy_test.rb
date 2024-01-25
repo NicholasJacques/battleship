@@ -28,14 +28,14 @@ describe RandomFireStrategy do
 
         # skip
         ship = Ship.new('battleship', 4)
-        opponent_board = Board.new([ship])
+        opponent_board = Board.new(ships: [ship])
         user = User.new
         ship_positions = ['E5', 'E6', 'E7', 'E8']
         opponent_board.place(ship_positions, ship)
         user.fire_history = [
           opponent_board.fire('E5')
         ]
-        fire_strategy = RandomFireStrategy.new(opponent_board, user)
+        fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
         result = fire_strategy.fire
         assert_includes ['E4', 'E6', 'D5', 'F5'], result.position
@@ -59,7 +59,7 @@ describe RandomFireStrategy do
 
         # skip
         ship = Ship.new('battleship', 4)
-        opponent_board = Board.new([ship])
+        opponent_board = Board.new(ships: [ship])
         user = User.new
         ship_positions = ['E5', 'E6', 'E7', 'E8']
         opponent_board.place(ship_positions, ship)
@@ -67,7 +67,7 @@ describe RandomFireStrategy do
           opponent_board.fire('E5'),
           opponent_board.fire('D5'),
         ]
-        fire_strategy = RandomFireStrategy.new(opponent_board, user)
+        fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
         result = fire_strategy.fire
         assert_includes ['E4', 'E6', 'F5'], result.position
@@ -91,7 +91,7 @@ describe RandomFireStrategy do
 
         # skip
         ship = Ship.new('battleship', 4)
-        opponent_board = Board.new([ship])
+        opponent_board = Board.new(ships: [ship])
         user = User.new
         ship_positions = ['E5', 'E6', 'E7', 'E8']
         opponent_board.place(ship_positions, ship)
@@ -100,7 +100,7 @@ describe RandomFireStrategy do
           opponent_board.fire('D5'),
           opponent_board.fire('F5'),
         ]
-        fire_strategy = RandomFireStrategy.new(opponent_board, user)
+        fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
         result = fire_strategy.fire
         assert_includes ['E4', 'E6'], result.position
@@ -124,7 +124,7 @@ describe RandomFireStrategy do
 
         # skip
         ship = Ship.new('battleship', 4)
-        opponent_board = Board.new([ship])
+        opponent_board = Board.new(ships: [ship])
         user = User.new
         ship_positions = ['E5', 'E6', 'E7', 'E8']
         opponent_board.place(ship_positions, ship)
@@ -134,7 +134,7 @@ describe RandomFireStrategy do
           opponent_board.fire('F5'),
           opponent_board.fire('E4'),
         ]
-        fire_strategy = RandomFireStrategy.new(opponent_board, user)
+        fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
         assert_equal 'E6', fire_strategy.fire.position
       end
@@ -157,7 +157,7 @@ describe RandomFireStrategy do
 
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['E5', 'E6', 'E7', 'E8']
           opponent_board.place(ship_positions, ship)
@@ -165,7 +165,7 @@ describe RandomFireStrategy do
             opponent_board.fire('E6'),
             opponent_board.fire('E7'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
   
           result = fire_strategy.fire
           assert_includes ['E5', 'E8'], result.position
@@ -189,7 +189,7 @@ describe RandomFireStrategy do
 
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['E5', 'E6', 'E7', 'E8']
           opponent_board.place(ship_positions, ship)
@@ -198,7 +198,7 @@ describe RandomFireStrategy do
             opponent_board.fire('E9'),
             opponent_board.fire('E8'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
     
           assert_equal 'E6', fire_strategy.fire.position
         end
@@ -220,7 +220,7 @@ describe RandomFireStrategy do
 
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['E5', 'E6', 'E7', 'E8']
           opponent_board.place(ship_positions, ship)
@@ -229,7 +229,7 @@ describe RandomFireStrategy do
             opponent_board.fire('E7'),
             opponent_board.fire('E5'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
           assert_includes ['E4', 'E8'], fire_strategy.fire.position
         end
@@ -251,7 +251,7 @@ describe RandomFireStrategy do
 
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['E5', 'E6', 'E7', 'E8']
           opponent_board.place(ship_positions, ship)
@@ -261,7 +261,7 @@ describe RandomFireStrategy do
             opponent_board.fire('E8'),
             opponent_board.fire('E9'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
           assert_equal 'E5', fire_strategy.fire.position
         end
@@ -269,8 +269,10 @@ describe RandomFireStrategy do
 
       describe 'when there adjacet hits and adjacent misses in both directions' do
         it 'fires in adjacent cells in line with either direction' do
+          # skip
+
           ship = Ship.new('carrier', 5)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['F4', 'F5', 'F6', 'F7', 'F8']
           opponent_board.place(ship_positions, ship)
@@ -280,7 +282,7 @@ describe RandomFireStrategy do
             opponent_board.fire('G7'),
             opponent_board.fire('F6'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
           assert_includes ['F5', 'F8'], fire_strategy.fire.position
         end
@@ -304,7 +306,7 @@ describe RandomFireStrategy do
 
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['C5', 'D5', 'E5', 'F5']
           opponent_board.place(ship_positions, ship)
@@ -312,7 +314,7 @@ describe RandomFireStrategy do
             opponent_board.fire('C5'),
             opponent_board.fire('D5'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
   
           result = fire_strategy.fire
           assert_includes ['B5', 'E5'], result.position
@@ -336,7 +338,7 @@ describe RandomFireStrategy do
 
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['C5', 'D5', 'E5', 'F5']
           opponent_board.place(ship_positions, ship)
@@ -345,7 +347,7 @@ describe RandomFireStrategy do
             opponent_board.fire('B5'),
             opponent_board.fire('D5'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
           assert_equal 'E5', fire_strategy.fire.position
         end
@@ -367,7 +369,7 @@ describe RandomFireStrategy do
 
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['C5', 'D5', 'E5', 'F5']
           opponent_board.place(ship_positions, ship)
@@ -376,7 +378,7 @@ describe RandomFireStrategy do
             opponent_board.fire('C5'),
             opponent_board.fire('E5'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
           assert_includes ['B5', 'F5'], fire_strategy.fire.position
         end
@@ -398,7 +400,7 @@ describe RandomFireStrategy do
           
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['C5', 'D5', 'E5', 'F5']
           opponent_board.place(ship_positions, ship)
@@ -408,7 +410,7 @@ describe RandomFireStrategy do
             opponent_board.fire('F5'),
             opponent_board.fire('G5'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
           assert_equal 'C5', fire_strategy.fire.position
         end
       end
@@ -429,7 +431,7 @@ describe RandomFireStrategy do
 
           # skip
           ship = Ship.new('battleship', 4)
-          opponent_board = Board.new([ship])
+          opponent_board = Board.new(ships: [ship])
           user = User.new
           ship_positions = ['F9', 'G9', 'H9', 'I9']
           opponent_board.place(ship_positions, ship)
@@ -441,7 +443,7 @@ describe RandomFireStrategy do
             opponent_board.fire('I9'),
             opponent_board.fire('H9'),
           ]
-          fire_strategy = RandomFireStrategy.new(opponent_board, user)
+          fire_strategy = RandomFireStrategy.new(board: opponent_board, user: user)
 
           assert_equal 'G9', fire_strategy.fire.position
         end

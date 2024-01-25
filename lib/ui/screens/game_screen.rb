@@ -42,8 +42,13 @@ module UI
         else
           game_state.process_action
         end
+        break if game_state.quit?
       end
     end
 
+    def tear_down
+      Curses.clear
+      Curses.close_screen
+    end
   end
 end

@@ -1,20 +1,20 @@
 class RandomShipPlacementStrategy
-  def self.place_all(board)
+  def self.place_all(board:)
     messages = []
     board.ships.each do |ship|
-      messages << place_ship(ship, board)
+      messages << place_ship(ship: ship, board: board)
     end
     return [true, messages]
   end
 
-  def self.place_ship(ship, board)
+  def self.place_ship(ship:, board:)
     ship_placed = false
     starting_coordinates = [random_index, random_index]
     direction = random_direction
     directions_tried = []
     until ship_placed do
       begin
-        positions = coordinates_for_ship_in_direction(starting_coordinates, direction, ship.size, board)
+        positions = coordinates_for_ship_in_direction(starting_cell: starting_coordinates, direction: direction, ship_size: ship.size, board: board)
         board.place(positions, ship)
         message = "Placed #{ship.name} at #{positions.join(' ')}"
         ship_placed = true
@@ -30,7 +30,7 @@ class RandomShipPlacementStrategy
     return message
   end
 
-  def self.coordinates_for_ship_in_direction(starting_cell, direction, ship_size, board)
+  def self.coordinates_for_ship_in_direction(starting_cell:, direction:, ship_size:, board:)
     starting_column, starting_row = starting_cell
     case direction
     when :up

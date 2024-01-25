@@ -19,19 +19,32 @@ class Game
 
   attr_reader :user, :ai
   def initialize
-    ai_board = Board.new(Game.ships)
-    user_board = Board.new(Game.ships)
+    ai_board = Board.new(ships: Game.ships)
+    user_board = Board.new(ships: Game.ships)
 
     @user = User.new(
       name: 'User',
       board: user_board,
-      fire_strategy: FireStrategyFactory.create(:manual, ai_board),
+      fire_strategy: FireStrategyFactory.create(fire_strategy_name: :manual, board: ai_board),
     )
+    # @user = User.new(
+    #   name: 'User',
+    #   board: user_board,
+    # )
+
+    # @user.fire_strategy = FireStrategyFactory.create(fire_strategy_name: :random, board: ai_board, user: @user)
     @ai = User.new(board: ai_board)
   end
 
   def over?
-    @user.lost? || @ai.lost?
+    user.lost? || ai.lost?
   end
 
+  def winner
+    if @user.lost?
+      ai
+    elsif ai.lost?
+      user
+    end
+  end
 end

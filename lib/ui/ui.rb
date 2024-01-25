@@ -2,6 +2,7 @@ require './lib/game_state_manager.rb'
 require './lib/ui/screens/start_screen.rb'
 require './lib/ui/screens/main_menu.rb'
 require './lib/ui/screens/game_screen.rb'
+require './lib/ui/screens/game_over_screen.rb'
 
 module UI
   class UI
@@ -17,6 +18,10 @@ module UI
 
     def menu_screen
       @menu_screen ||= MainMenu.new
+    end
+
+    def game_over_screen
+      @game_over_screen ||= GameOverScreen.new
     end
 
     def start
@@ -42,6 +47,13 @@ module UI
       game_screen.render
       game_screen.run
       game_screen.tear_down
+      game_over
+    end
+
+    def game_over
+      game_over_screen.render
+      game_over_screen.run
+      main_menu
     end
 
   end
