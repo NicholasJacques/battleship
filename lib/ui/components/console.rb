@@ -1,7 +1,7 @@
 module UI
   class Console < Window
-    def initialize(*args)
-      super(*args)
+    def initialize(**kwargs)
+      super(**kwargs)
     end
 
     def render

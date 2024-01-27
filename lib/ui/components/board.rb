@@ -1,9 +1,5 @@
 module UI
   class Board < Window
-    def initialize(*args)
-      super(*args)
-    end
-
     def render
       props[:board_data].grid.each_with_index do |row, y|
         window.setpos(y,0)

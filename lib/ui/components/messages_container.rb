@@ -4,9 +4,16 @@ require './lib/ui/components/messages.rb'
 module UI
   class MessagesContainer < Window
 
-    def initialize(*args)
-      super(*args)
-      @messages = Messages.new(self, game_state, 9, 52, 1, 1)
+    def initialize(**kwargs)
+      super(**kwargs)
+      @messages = Messages.new(
+        parent: self, 
+        game_state: game_state, 
+        height: 9, 
+        width: 52, 
+        top: 1, 
+        left: 1
+      )
       children << @messages
     end
 

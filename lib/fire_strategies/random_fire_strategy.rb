@@ -16,6 +16,7 @@ class RandomFireStrategy
     if position.nil?
       position = board.cells.filter {|k, v| v.hit == false}.keys.sample
     end
+
     board.fire(position)
   end
 
@@ -49,6 +50,7 @@ class RandomFireStrategy
         end
       end
     end
+    nil
   end
 
   def pursue_ship?(fire_result)

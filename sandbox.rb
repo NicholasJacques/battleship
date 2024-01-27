@@ -5,11 +5,19 @@ end
 require 'pry-byebug'; binding.pry
 puts 'exit'
 
-# require 'curses'
+require 'curses'
 
 # Curses.init_screen
 
+
+
 # scr = Curses.init_screen()
+# scr.addstr("
+# ")
+
+# scr.refresh
+# scr.getch
+
 # starting_height = 0
 
 # window = Curses::Window.new(12, 22, 1, 1)
@@ -40,6 +48,13 @@ puts 'exit'
 # pad.refresh(0, 0, 2, 2, 22, 32)
 
 # pad.getch
+
+###
+#
+#
+# ## 
+#  #
+####
 
 
 

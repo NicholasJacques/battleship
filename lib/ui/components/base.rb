@@ -4,7 +4,7 @@ module UI
   class Base
     
     attr_reader :parent, :game_state, :children
-    def initialize(parent, game_state)
+    def initialize(parent:, game_state:)
       @parent = parent
       @game_state = game_state
       @children = []
@@ -15,8 +15,8 @@ module UI
     include Positionable
 
     attr_reader :window, :props
-    def initialize(parent, game_state, height, width, top, left, props={})
-      super(parent, game_state)
+    def initialize(parent:, game_state:, height:, width:, top:, left:, props: {})
+      super(parent: parent, game_state: game_state)
       @window = parent.window.derwin(height, width, top, left)
       @props = props
     end

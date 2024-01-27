@@ -4,9 +4,17 @@ module UI
   class ConsoleContainer < Window
 
     attr_reader :console
-    def initialize(*args)
-      super(*args)
-      @console = Console.new(self, game_state, 3, 54, 1, 0, props)
+    def initialize(**kwargs)
+      super(**kwargs)
+      @console = Console.new(
+        parent: self, 
+        game_state: game_state, 
+        height: 3, 
+        width: 54, 
+        top: 1, 
+        left: 0, 
+        props: props
+      )
       children << @console
     end
 

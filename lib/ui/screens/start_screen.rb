@@ -6,7 +6,7 @@ module UI
     include Positionable
 
     attr_reader :window
-    def initialize()
+    def initialize
       @window = Curses.stdscr
       Curses.cbreak
       Curses.noecho
